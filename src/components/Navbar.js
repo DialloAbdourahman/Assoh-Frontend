@@ -1,19 +1,41 @@
 import React from 'react';
 import styled from 'styled-components';
+import { AiOutlineShoppingCart, AiOutlineSearch } from 'react-icons/ai';
+import { BsSun } from 'react-icons/bs';
+import { GiMoon } from 'react-icons/gi';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (
     <Wrapper>
       <div className='container'>
-        <h1>-ASSOH-</h1>
-        <aside>
-          <Link>Seller</Link>
-          <Link>Buyer</Link>
-          <Link>
-            <button>Contact Us</button>
-          </Link>
-        </aside>
+        <h1 className='logo'>ASSOH</h1>
+        <form method='post'>
+          <input
+            type='text'
+            name='search'
+            id='search'
+            placeholder='Search for a product'
+          />
+          <AiOutlineSearch />
+        </form>
+        <div className='category-container'>
+          <p className='category'>Category</p>
+          <div className='categories'></div>
+        </div>
+        <Link to={'/'}>Contact Us</Link>
+        <Link to={'/'}>Help</Link>
+        <Link to={'/'} className='login'>
+          Login
+        </Link>
+        <Link to={'/cart'}>
+          <p>Cart</p>
+          <AiOutlineShoppingCart />
+        </Link>
+        <Link to={'account'}>Account</Link>
+        <button>
+          <BsSun />
+        </button>
       </div>
     </Wrapper>
   );
@@ -21,37 +43,4 @@ const Navbar = () => {
 
 export default Navbar;
 
-const Wrapper = styled.nav`
-  width: 100%;
-  background-color: var(--grey);
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
-  }
-  h1 {
-    color: var(--black);
-    font-size: var(--largeFontSize);
-    font-weight: var(--largeFontWeight);
-  }
-
-  a {
-    text-decoration: none;
-    color: black;
-    font-size: var(--smallFontSize);
-    font-weight: var(--normalFontWeight);
-    margin-left: 40px;
-    color: black;
-  }
-
-  button {
-    background-color: black;
-    color: white;
-    border: none;
-    outline: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-weight: var(--largeFontWeight);
-  }
-`;
+const Wrapper = styled.nav``;

@@ -1,15 +1,16 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Home, Login, SignUp, Splash } from './pages';
+import { Home, Login, SignUp } from './pages';
 import { useGlobalContext } from './contexts/globalContext';
+import { Navbar } from './components';
 
 function App() {
   const { user } = useGlobalContext();
   return (
     <BrowserRouter>
-      {/* Navbar or Sidebar maybe */}
+      <Navbar />
       <Routes>
-        <Route path='/' element={user ? <Home /> : <Splash />} />
+        <Route path='/' element={<Home />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<SignUp />} />
       </Routes>

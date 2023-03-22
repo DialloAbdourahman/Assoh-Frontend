@@ -4,6 +4,7 @@ import {} from '../utils/actions';
 
 const initialState = {
   user: null,
+  light: true,
 };
 
 const GlobalContext = React.createContext();

@@ -5,6 +5,7 @@ import {} from '../utils/actions';
 const initialState = {
   user: null,
   light: true,
+  sidebar: false,
 };
 
 const GlobalContext = React.createContext();

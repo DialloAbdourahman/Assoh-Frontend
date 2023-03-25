@@ -26,7 +26,7 @@ const Navbar = () => {
     return () => {
       window.removeEventListener('resize', checkSize);
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <Wrapper
@@ -107,8 +107,8 @@ const Navbar = () => {
 export default Navbar;
 
 const Wrapper = styled.nav`
-  color: var(--lightgrey);
-  transition: var(--themetransitionspeed);
+  color: white;
+  transition: background var(--themetransitionspeed) linear;
 
   .container {
     display: flex;
@@ -277,7 +277,7 @@ const Wrapper = styled.nav`
   }
 
   @media (max-width: 500px) {
-    padding: 10px 0;
+    padding: 10.5px 0;
 
     .search-form {
       display: none;

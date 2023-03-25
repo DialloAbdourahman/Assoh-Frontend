@@ -32,6 +32,7 @@ const Wrapper = styled.section`
   left: 0;
   right: 0;
   transition: transform 0.1s ease-in;
+  z-index: 500;
   display: none;
 
   .inside-sidebar {

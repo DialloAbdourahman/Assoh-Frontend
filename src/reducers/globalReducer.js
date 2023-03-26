@@ -1,4 +1,9 @@
-import { OPEN_SIDEBAR, TOGGLE_THEME, CLOSE_SIDEBAR } from '../utils/actions';
+import {
+  OPEN_SIDEBAR,
+  TOGGLE_THEME,
+  CLOSE_SIDEBAR,
+  SET_USER,
+} from '../utils/actions';
 
 const globalReducer = (state, action) => {
   if (action.type === TOGGLE_THEME) {
@@ -11,6 +16,10 @@ const globalReducer = (state, action) => {
 
   if (action.type === CLOSE_SIDEBAR) {
     return { ...state, sidebar: false };
+  }
+
+  if (action.type === SET_USER) {
+    return { ...state, user: action.payload };
   }
 
   throw new Error(`No Matching "${action.type}" - action type`);

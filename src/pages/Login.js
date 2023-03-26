@@ -1,19 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useGlobalContext } from '../contexts/globalContext';
 import { MdEmail } from 'react-icons/md';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { API_LINK } from '../utils/constants';
+import { SET_USER } from '../utils/actions';
 
 const Login = () => {
   const [passwordOneShown, setPasswordOneShown] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const { light } = useGlobalContext();
+  const { light, dispatch } = useGlobalContext();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!email || !password) {
+      setErrorMessage('Enter all the fields.');
+      return;
+    }
+
+    try {
+      const { data } = await axios({
+        method: 'post',
+        url: `${API_LINK}/users/login`,
+        data: {
+          email,
+          password,
+        },
+      });
+      localStorage.setItem('user', JSON.stringify(data));
+      dispatch({ type: SET_USER, payload: data });
+      navigate('/');
+    } catch (error) {
+      const errorMessage = error.response
+        ? error.response.data.message
+        : error.message;
+      setErrorMessage(errorMessage);
+    }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setErrorMessage('');
+    }, 1000);
+  }, [errorMessage]);
 
   return (
     <Wrapper>
@@ -25,12 +62,15 @@ const Login = () => {
           Create your business account on ASSOH
         </h1>
         <form onSubmit={handleSubmit}>
+          {errorMessage && <p className='error-message'>{errorMessage}</p>}
           <div className='input-container'>
             <input
               type='email'
               name='email'
               id='email'
               placeholder='Email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
             <MdEmail className='left-icon' />
@@ -41,10 +81,13 @@ const Login = () => {
               name='password'
               id='password'
               placeholder='Password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
             <RiLockPasswordLine className='left-icon' />
             <button
+              type='button'
               className='show-password'
               onClick={() => setPasswordOneShown(!passwordOneShown)}
             >
@@ -52,7 +95,7 @@ const Login = () => {
             </button>
           </div>
           <button type='submit' className='submit'>
-            + Register
+            Log in
           </button>
           <p
             className='login-instead'
@@ -161,6 +204,13 @@ const Wrapper = styled.section`
 
   .alternative {
     color: var(--orange);
+  }
+
+  .error-message {
+    font-weight: bold;
+    color: red;
+    text-align: center;
+    margin: 10px 0;
   }
 
   @media (max-width: 1100px) {

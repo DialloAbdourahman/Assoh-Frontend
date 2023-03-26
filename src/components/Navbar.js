@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { AiOutlineShoppingCart, AiOutlineSearch } from 'react-icons/ai';
 import { MdDarkMode, MdLightMode } from 'react-icons/md';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useGlobalContext } from '../contexts/globalContext';
 import { OPEN_SIDEBAR, TOGGLE_THEME, CLOSE_SIDEBAR } from '../utils/actions';
 import CategoriesList from './CategoriesList';
@@ -35,7 +35,9 @@ const Navbar = () => {
       }}
     >
       <div className='container'>
-        <h1 className='logo'>ASSOH</h1>
+        <h1 className='logo'>
+          <Link to={'/'}>ASSOH</Link>
+        </h1>
         <form method='post' className='search-form'>
           <input
             type='text'
@@ -60,28 +62,51 @@ const Navbar = () => {
           <p className='category'>Category</p>
           <CategoriesList />
         </div>
-        <Link to={'/'} className='contact-us'>
+        <NavLink
+          to={'/contact'}
+          className={({ isActive }) =>
+            isActive ? 'contact-us active-link' : 'contact-us'
+          }
+        >
           Contact Us
-        </Link>
-        <Link to={'/'} className='help'>
+        </NavLink>
+        <NavLink
+          to={'/help'}
+          className={({ isActive }) => (isActive ? 'help active-link' : 'help')}
+        >
           Help
-        </Link>
-        {!user && (
-          <Link to={'/login'} className='login'>
+        </NavLink>
+        {!user.email && (
+          <NavLink
+            to={'/login'}
+            className={({ isActive }) =>
+              isActive ? 'login active-link' : 'login'
+            }
+          >
             Login
-          </Link>
+          </NavLink>
         )}
-        <Link to={'/cart'} className='cart'>
+        <NavLink
+          to={'/cart'}
+          className={({ isActive }) => (isActive ? 'cart active-link' : 'cart')}
+        >
           <p className='cart-text'>Cart</p>
           <AiOutlineShoppingCart className='cart-icon' />
           <div className='cart-number'>
             <span>6</span>
           </div>
-        </Link>
-        {user && <Link to={'account'}>{user}</Link>}
+        </NavLink>
+        {user.email && (
+          <Link to={'/account'} className='account'>
+            {user.name.substring(0, 2)}
+          </Link>
+        )}
         <button
           className='theme'
-          onClick={() => dispatch({ type: TOGGLE_THEME })}
+          onClick={() => {
+            dispatch({ type: TOGGLE_THEME });
+            localStorage.setItem('light', `${!light}`);
+          }}
         >
           {light ? <MdDarkMode /> : <MdLightMode />}
         </button>
@@ -243,6 +268,19 @@ const Wrapper = styled.nav`
     color: var(--orange);
   }
 
+  .active-link {
+    color: var(--orange);
+  }
+
+  .account {
+    background-color: var(--orange);
+    color: white;
+    padding: 5px;
+    border-radius: 50%;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
   @media (max-width: 900px) {
     .cart-text {
       display: none;
@@ -288,6 +326,10 @@ const Wrapper = styled.nav`
     }
 
     .login {
+      display: none;
+    }
+
+    .account {
       display: none;
     }
 

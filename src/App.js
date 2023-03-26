@@ -1,14 +1,17 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Home, Login, SignUp } from './pages';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 import { useGlobalContext } from './contexts/globalContext';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import styled from 'styled-components';
+import ContactUs from './pages/ContactUs';
 
 function App() {
-  const { light } = useGlobalContext();
+  const { light, user } = useGlobalContext();
   return (
     <Wrapper style={{ background: `${light ? 'white' : 'var(--black)'}` }}>
       <BrowserRouter>
@@ -17,8 +20,19 @@ function App() {
         <WrapperGrow>
           <Routes>
             <Route path='/' element={<Home />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/signup' element={<SignUp />} />
+            <Route
+              path='/login'
+              element={
+                user.email ? <Navigate to={'/'} replace={true} /> : <Login />
+              }
+            />
+            <Route
+              path='/signup'
+              element={
+                user.email ? <Navigate to={'/'} replace={true} /> : <SignUp />
+              }
+            />
+            <Route path='/contact' element={<ContactUs />} />
           </Routes>
         </WrapperGrow>
         <Footer />
@@ -37,7 +51,6 @@ const WrapperGrow = styled.section`
 
 export default App;
 
-// when we are on that page, the text should turn orange.
-// hook up the sign up and log in functionality (login first).
-// work on the search mobile component.
-// work on the sidebar.
+// create a custome alert component.
+// create a loading.
+// create index.js for components and pages.

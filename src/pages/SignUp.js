@@ -1,21 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useGlobalContext } from '../contexts/globalContext';
 import { GoPencil } from 'react-icons/go';
 import { MdEmail } from 'react-icons/md';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { API_LINK } from '../utils/constants';
+import { SET_USER } from '../utils/actions';
 
 const SignUp = () => {
   const [passwordOneShown, setPasswordOneShown] = useState(false);
   const [passwordTwoShown, setPasswordTwoShown] = useState(false);
+  const [data, setData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    password2: '',
+  });
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const { light } = useGlobalContext();
+  const { light, dispatch } = useGlobalContext();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setData({ ...data, [name]: value });
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!data.email || !data.name || !data.password || !data.password2) {
+      setErrorMessage('Please enter all the fields');
+      return;
+    }
+
+    if (data.password !== data.password2) {
+      setErrorMessage('Passwords mush match');
+      return;
+    }
+
+    try {
+      const user = await axios({
+        method: 'post',
+        url: `${API_LINK}/users/`,
+        data: {
+          name: data.name,
+          email: data.email,
+          password: data.password,
+        },
+      });
+      localStorage.setItem('user', JSON.stringify(user.data));
+      dispatch({ type: SET_USER, payload: user.data });
+      navigate('/');
+    } catch (error) {
+      const errorMessage = error.response
+        ? error.response.data.message
+        : error.message;
+      setErrorMessage(errorMessage);
+    }
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setErrorMessage('');
+    }, 1000);
+  }, [errorMessage]);
 
   return (
     <Wrapper>
@@ -27,12 +80,15 @@ const SignUp = () => {
           Create your business account on ASSOH
         </h1>
         <form onSubmit={handleSubmit}>
+          {errorMessage && <p className='error-message'>{errorMessage}</p>}
           <div className='input-container'>
             <input
               type='text'
               name='name'
               id='name'
               placeholder='Name'
+              onChange={handleChange}
+              value={data.name}
               required
             />
             <GoPencil className='left-icon' />
@@ -43,6 +99,8 @@ const SignUp = () => {
               name='email'
               id='email'
               placeholder='Email'
+              onChange={handleChange}
+              value={data.email}
               required
             />
             <MdEmail className='left-icon' />
@@ -53,10 +111,13 @@ const SignUp = () => {
               name='password'
               id='password'
               placeholder='Password'
+              onChange={handleChange}
+              value={data.password}
               required
             />
             <RiLockPasswordLine className='left-icon' />
             <button
+              type='button'
               className='show-password'
               onClick={() => setPasswordOneShown(!passwordOneShown)}
             >
@@ -69,10 +130,13 @@ const SignUp = () => {
               name='password2'
               id='password2'
               placeholder='Confirm Password'
+              onChange={handleChange}
+              value={data.password2}
               required
             />
             <RiLockPasswordLine className='left-icon' />
             <button
+              type='button'
               className='show-password'
               onClick={() => setPasswordTwoShown(!passwordTwoShown)}
             >
@@ -191,6 +255,13 @@ const Wrapper = styled.section`
 
   .alternative {
     color: var(--orange);
+  }
+
+  .error-message {
+    font-weight: bold;
+    color: red;
+    text-align: center;
+    margin: 10px 0;
   }
 
   @media (max-width: 1100px) {

@@ -2,9 +2,28 @@ import React, { useContext, useReducer } from 'react';
 import reducer from '../reducers/globalReducer';
 import {} from '../utils/actions';
 
+const getUserFromLocalStorage = () => {
+  let user = localStorage.getItem('user');
+  if (user) {
+    return JSON.parse(user);
+  } else {
+    return {};
+  }
+};
+
+const getThemeFromLocalStorage = () => {
+  let light = localStorage.getItem('light');
+  if (light) {
+    let boolValue = light === 'true';
+    return boolValue;
+  } else {
+    return true;
+  }
+};
+
 const initialState = {
-  user: null,
-  light: true,
+  user: getUserFromLocalStorage(),
+  light: getThemeFromLocalStorage(),
   sidebar: false,
 };
 

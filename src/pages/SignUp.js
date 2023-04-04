@@ -8,7 +8,11 @@ import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_LINK } from '../utils/constants';
-import { SET_USER } from '../utils/actions';
+import {
+  SET_LOADING_FALSE,
+  SET_LOADING_TRUE,
+  SET_USER,
+} from '../utils/actions';
 
 const SignUp = () => {
   const [passwordOneShown, setPasswordOneShown] = useState(false);
@@ -20,7 +24,6 @@ const SignUp = () => {
     password2: '',
   });
   const [errorMessage, setErrorMessage] = useState('');
-
   const { light, dispatch } = useGlobalContext();
   const navigate = useNavigate();
 
@@ -32,6 +35,8 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    dispatch({ type: SET_LOADING_TRUE });
 
     if (!data.email || !data.name || !data.password || !data.password2) {
       setErrorMessage('Please enter all the fields');
@@ -53,14 +58,18 @@ const SignUp = () => {
           password: data.password,
         },
       });
+
       localStorage.setItem('user', JSON.stringify(user.data));
       dispatch({ type: SET_USER, payload: user.data });
       navigate('/');
+      dispatch({ type: SET_LOADING_FALSE });
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.message
         : error.message;
+
       setErrorMessage(errorMessage);
+      dispatch({ type: SET_LOADING_FALSE });
     }
   };
 

@@ -1,22 +1,20 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
+import { Home, Login, SignUp, ContactUs, Products } from './pages';
 import { useGlobalContext } from './contexts/globalContext';
-import Sidebar from './components/Sidebar';
-import Footer from './components/Footer';
-import Navbar from './components/Navbar';
+import { Navbar, Sidebar, Footer, SubMenu } from './components';
 import styled from 'styled-components';
-import ContactUs from './pages/ContactUs';
+import Loading from './components/Loading';
 
 function App() {
-  const { light, user } = useGlobalContext();
+  const { light, user, loading } = useGlobalContext();
   return (
     <Wrapper style={{ background: `${light ? 'white' : 'var(--black)'}` }}>
       <BrowserRouter>
         <Navbar />
+        <SubMenu />
         <Sidebar />
+        {loading && <Loading />}
         <WrapperGrow>
           <Routes>
             <Route path='/' element={<Home />} />
@@ -26,6 +24,7 @@ function App() {
                 user.email ? <Navigate to={'/'} replace={true} /> : <Login />
               }
             />
+            <Route path='/products' element={<Products />} />
             <Route
               path='/signup'
               element={
@@ -35,7 +34,7 @@ function App() {
             <Route path='/contact' element={<ContactUs />} />
           </Routes>
         </WrapperGrow>
-        <Footer />
+        {/* <Footer /> */}
       </BrowserRouter>
     </Wrapper>
   );
@@ -46,11 +45,11 @@ const Wrapper = styled.section`
 `;
 
 const WrapperGrow = styled.section`
-  height: calc(100vh - (59px + 18px));
+  min-height: calc(100vh - (59px + 18px));
 `;
 
 export default App;
 
-// create a custome alert component.
-// create a loading.
-// create index.js for components and pages.
+// Work on a custome error message notification.
+// work on the loading state of the categories i.e the submenu, the hover submenu and the list of categories of the home page.
+// Work on the search component and it's loading state.

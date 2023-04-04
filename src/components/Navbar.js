@@ -5,14 +5,39 @@ import { MdDarkMode, MdLightMode } from 'react-icons/md';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { Link, NavLink } from 'react-router-dom';
 import { useGlobalContext } from '../contexts/globalContext';
-import { OPEN_SIDEBAR, TOGGLE_THEME, CLOSE_SIDEBAR } from '../utils/actions';
-import CategoriesList from './CategoriesList';
-import SearchList from './SearchList';
-import MobileSearch from './MobileSearch';
+import {
+  OPEN_SIDEBAR,
+  TOGGLE_THEME,
+  CLOSE_SIDEBAR,
+  SET_USER,
+  SET_LOADING_TRUE,
+  SET_LOADING_FALSE,
+} from '../utils/actions';
+import { SearchList, MobileSearch, CategoriesList } from './index';
+import { API_LINK } from '../utils/constants';
+import axios from 'axios';
 
 const Navbar = () => {
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const { light, user, dispatch } = useGlobalContext();
+
+  const logout = async () => {
+    try {
+      dispatch({ type: SET_LOADING_TRUE });
+
+      await axios({
+        method: 'POST',
+        url: `${API_LINK}/users/logout`,
+        headers: { Authorization: 'Bearer ' + user.token },
+      });
+
+      localStorage.removeItem('user');
+      dispatch({ type: SET_USER });
+      dispatch({ type: SET_LOADING_FALSE });
+    } catch (error) {
+      dispatch({ type: SET_LOADING_FALSE });
+    }
+  };
 
   useEffect(() => {
     const checkSize = () => {
@@ -76,14 +101,18 @@ const Navbar = () => {
         >
           Help
         </NavLink>
-        {!user.email && (
+        {user.email ? (
+          <button className='login' onClick={logout}>
+            Log out
+          </button>
+        ) : (
           <NavLink
             to={'/login'}
             className={({ isActive }) =>
               isActive ? 'login active-link' : 'login'
             }
           >
-            Login
+            Log in
           </NavLink>
         )}
         <NavLink
@@ -173,7 +202,7 @@ const Wrapper = styled.nav`
     background-color: transparent;
     border: none;
     font-size: 25px;
-    color: var(--orange);
+    color: white;
   }
 
   .search-form {
@@ -216,6 +245,8 @@ const Wrapper = styled.nav`
     border: 2px solid var(--orange);
     border-radius: 5px;
     padding: 5px 10px;
+    background-color: transparent;
+    color: white;
   }
 
   .toggle-sidebar {
@@ -242,9 +273,10 @@ const Wrapper = styled.nav`
 
   .category-container div {
     position: absolute;
-    top: 90%;
+    top: 100%;
     right: 50%;
     left: 50%;
+    z-index: 100;
     transform: translate(-50%, 0);
     width: 250%;
     display: none;
@@ -255,7 +287,6 @@ const Wrapper = styled.nav`
   }
 
   a {
-    color: var(--lightgrey);
     text-decoration: none;
   }
 
@@ -279,6 +310,13 @@ const Wrapper = styled.nav`
     border-radius: 50%;
     text-transform: uppercase;
     font-weight: bold;
+  }
+
+  .logo a,
+  .cart,
+  .help,
+  .contact-us {
+    color: white;
   }
 
   @media (max-width: 900px) {

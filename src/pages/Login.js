@@ -7,7 +7,11 @@ import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_LINK } from '../utils/constants';
-import { SET_USER } from '../utils/actions';
+import {
+  SET_USER,
+  SET_LOADING_TRUE,
+  SET_LOADING_FALSE,
+} from '../utils/actions';
 
 const Login = () => {
   const [passwordOneShown, setPasswordOneShown] = useState(false);
@@ -20,6 +24,8 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    dispatch({ type: SET_LOADING_TRUE });
 
     if (!email || !password) {
       setErrorMessage('Enter all the fields.');
@@ -35,14 +41,18 @@ const Login = () => {
           password,
         },
       });
+
       localStorage.setItem('user', JSON.stringify(data));
       dispatch({ type: SET_USER, payload: data });
       navigate('/');
+      dispatch({ type: SET_LOADING_FALSE });
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.message
         : error.message;
+
       setErrorMessage(errorMessage);
+      dispatch({ type: SET_LOADING_FALSE });
     }
   };
 

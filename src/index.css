@@ -1,10 +1,26 @@
 :root {
+  /*My variables*/
   --lightblack: #2b2929;
   --black: #131313;
   --lightgrey: #e4e4e7;
   --orange: #fd624c;
   --darkblue: #0a1a4a;
   --themetransitionspeed: 0.5s;
+  --transparentbackground: rgb(255, 255, 255, 0.5);
+  /* --transparentbackground: rgb(255, 255, 0, 0.5); */
+
+  /*Slick variables*/
+  --swiper-navigation-color: white;
+  --swiper-navigation-size: 30px;
+  --swiper-navigation-top-offset: 50%;
+  --swiper-navigation-sides-offset: 30px;
+  --swiper-pagination-color: white;
+  --swiper-pagination-bullet-size: 8px;
+  --swiper-pagination-bullet-width: 10px;
+  --swiper-pagination-bullet-height: 10px;
+  --swiper-pagination-bullet-inactive-color: #000;
+  --swiper-pagination-bullet-inactive-opacity: 0.2;
+  --swiper-pagination-bullet-opacity: 1;
 }
 * {
   margin: 0;

@@ -44,7 +44,7 @@ const Wrapper = styled.section`
   }
 
   .outside-sidebar {
-    background: rgba(1, 1, 1, 0.5);
+    background: var(--transparentbackground);
     width: 40%;
     height: 100%;
     position: absolute;

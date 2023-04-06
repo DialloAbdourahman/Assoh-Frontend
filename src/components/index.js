@@ -8,6 +8,9 @@ import SubMenu from './SubMenu';
 import Carousel from './Carousel';
 import Categories from './Categories';
 import Loading from './Loading';
+import SmallLoading from './SmallLoading';
+import ErrorMessage from './ErrorMessage';
+import OutsideAlerter from './OutsideAlerter';
 
 export {
   CategoriesList,
@@ -20,4 +23,7 @@ export {
   Carousel,
   Categories,
   Loading,
+  SmallLoading,
+  ErrorMessage,
+  OutsideAlerter,
 };

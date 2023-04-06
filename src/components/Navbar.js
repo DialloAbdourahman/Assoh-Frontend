@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { AiOutlineShoppingCart, AiOutlineSearch } from 'react-icons/ai';
 import { MdDarkMode, MdLightMode } from 'react-icons/md';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../contexts/globalContext';
+import { useProductsContext } from '../contexts/productsContext';
 import {
   OPEN_SIDEBAR,
   TOGGLE_THEME,
@@ -12,6 +13,8 @@ import {
   SET_USER,
   SET_LOADING_TRUE,
   SET_LOADING_FALSE,
+  SET_SEARCH_TERM,
+  EMPTY_SEARCH_TERM,
 } from '../utils/actions';
 import { SearchList, MobileSearch, CategoriesList } from './index';
 import { API_LINK } from '../utils/constants';
@@ -20,6 +23,8 @@ import axios from 'axios';
 const Navbar = () => {
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const { light, user, dispatch } = useGlobalContext();
+  const { searchTerm, dispatch: dispatchProductContext } = useProductsContext();
+  const navigate = useNavigate();
 
   const logout = async () => {
     try {
@@ -37,6 +42,16 @@ const Navbar = () => {
     } catch (error) {
       dispatch({ type: SET_LOADING_FALSE });
     }
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+
+    navigate('/products', {
+      state: { name: searchTerm, page: 1, category: '' },
+    });
+
+    dispatchProductContext({ type: EMPTY_SEARCH_TERM });
   };
 
   useEffect(() => {
@@ -63,18 +78,29 @@ const Navbar = () => {
         <h1 className='logo'>
           <Link to={'/'}>ASSOH</Link>
         </h1>
-        <form method='post' className='search-form'>
+        <form
+          method='post'
+          className='search-form'
+          onSubmit={handleSearchSubmit}
+        >
           <input
             type='text'
             name='search'
             id='search'
             placeholder='Search for a product'
             autoComplete='off'
+            value={searchTerm}
+            onChange={(e) =>
+              dispatchProductContext({
+                type: SET_SEARCH_TERM,
+                payload: e.target.value,
+              })
+            }
           />
           <button type='submit' className='search-icon'>
             <AiOutlineSearch />
           </button>
-          {/* <SearchList /> */}
+          <SearchList />
         </form>
         <button
           type='submit'
@@ -269,17 +295,6 @@ const Wrapper = styled.nav`
 
   .category-container:hover div {
     display: block;
-  }
-
-  .category-container div {
-    position: absolute;
-    top: 100%;
-    right: 50%;
-    left: 50%;
-    z-index: 100;
-    transform: translate(-50%, 0);
-    width: 250%;
-    display: none;
   }
 
   .category-container:hover .category {

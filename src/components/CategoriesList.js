@@ -2,12 +2,26 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 import { useGlobalContext } from '../contexts/globalContext';
+import { CircularProgress } from '@mui/material';
+import { ErrorMessage } from './index';
 
 const CategoriesList = () => {
-  const { categories, categoriesLoading } = useGlobalContext();
+  const { categories, categoriesLoading, categoriesError } = useGlobalContext();
 
   if (categoriesLoading) {
-    return <h1>Loading...</h1>;
+    return (
+      <Wrapper>
+        <CircularProgress className='center' />
+      </Wrapper>
+    );
+  }
+
+  if (categoriesError) {
+    return (
+      <Wrapper>
+        <ErrorMessage message={categoriesError} direction='column' />
+      </Wrapper>
+    );
   }
 
   return (
@@ -33,9 +47,14 @@ const Wrapper = styled.div`
   border-radius: 3px;
   border: 1px solid black;
 
-  .category {
-    color: var(--black);
-  }
+  position: absolute;
+  top: 100%;
+  right: 50%;
+  left: 50%;
+  z-index: 100;
+  transform: translate(-50%, 0);
+  width: 250%;
+  display: none;
 
   a {
     display: block;
@@ -44,7 +63,6 @@ const Wrapper = styled.div`
     /* color: var(--black); */
     font-weight: bold;
     transition: padding 0.3s linear;
-    /* color: black; */
   }
 
   a:hover {

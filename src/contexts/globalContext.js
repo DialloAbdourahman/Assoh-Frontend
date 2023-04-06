@@ -2,7 +2,11 @@ import axios from 'axios';
 import React, { useContext, useReducer, useEffect } from 'react';
 import reducer from '../reducers/globalReducer';
 import { API_LINK } from '../utils/constants';
-import { SET_CATEGORIES, SET_CATEGORIES_LOADING } from '../utils/actions';
+import {
+  SET_CATEGORIES,
+  SET_CATEGORIES_LOADING,
+  SET_CATEGORIES_ERROR,
+} from '../utils/actions';
 
 const getUserFromLocalStorage = () => {
   let user = localStorage.getItem('user');
@@ -28,8 +32,10 @@ const initialState = {
   light: getThemeFromLocalStorage(),
   sidebar: false,
   loading: false,
+
   categories: [],
   categoriesLoading: false,
+  categoriesError: '',
 };
 
 const GlobalContext = React.createContext();
@@ -48,8 +54,10 @@ const GlobalProvider = ({ children }) => {
 
       dispatch({ type: SET_CATEGORIES, payload: categories.data });
       dispatch({ type: SET_CATEGORIES_LOADING, payload: false });
+      dispatch({ type: SET_CATEGORIES_ERROR, payload: '' });
     } catch (error) {
       dispatch({ type: SET_CATEGORIES_LOADING, payload: false });
+      dispatch({ type: SET_CATEGORIES_ERROR, payload: `${error.message}` });
     }
   };
 

@@ -2,13 +2,22 @@ import React from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { SmallLoading, ErrorMessage } from '../components';
 import { useGlobalContext } from '../contexts/globalContext';
 
 const SubMenu = () => {
-  const { categories, categoriesLoading, light } = useGlobalContext();
+  const { categories, categoriesLoading, categoriesError } = useGlobalContext();
 
   if (categoriesLoading) {
-    return <h1>Loading...</h1>;
+    return <SmallLoading />;
+  }
+
+  if (categoriesError) {
+    return (
+      <Wrapper>
+        <ErrorMessage message={categoriesError} />
+      </Wrapper>
+    );
   }
 
   return (

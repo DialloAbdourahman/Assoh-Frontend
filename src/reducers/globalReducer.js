@@ -7,6 +7,7 @@ import {
   SET_LOADING_FALSE,
   SET_CATEGORIES,
   SET_CATEGORIES_LOADING,
+  SET_CATEGORIES_ERROR,
 } from '../utils/actions';
 
 const globalReducer = (state, action) => {
@@ -51,6 +52,12 @@ const globalReducer = (state, action) => {
     };
   }
 
+  if (action.type === SET_CATEGORIES_ERROR) {
+    return {
+      ...state,
+      categoriesError: action.payload,
+    };
+  }
   throw new Error(`No Matching "${action.type}" - action type`);
 };
 

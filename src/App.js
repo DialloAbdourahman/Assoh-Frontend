@@ -50,6 +50,5 @@ const WrapperGrow = styled.section`
 
 export default App;
 
-// Work on a custome error message notification.
-// work on the loading state of the categories i.e the submenu, the hover submenu and the list of categories of the home page.
 // Work on the search component and it's loading state.
+// Write the test for search products route.

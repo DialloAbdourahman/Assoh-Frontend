@@ -1,13 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useGlobalContext } from '../contexts/globalContext';
+import { SmallLoading, ErrorMessage } from '../components';
 import { Link } from 'react-router-dom';
 
 const Categories = () => {
-  const { categories, categoriesLoading } = useGlobalContext();
+  const { categories, categoriesLoading, categoriesError } = useGlobalContext();
 
   if (categoriesLoading) {
-    return <h1>Loading...</h1>;
+    return <SmallLoading />;
+  }
+
+  if (categoriesError) {
+    return (
+      <Wrapper>
+        <ErrorMessage message={categoriesError} direction='column' />
+      </Wrapper>
+    );
   }
 
   return (

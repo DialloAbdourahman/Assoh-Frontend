@@ -268,8 +268,8 @@ const Wrapper = styled.nav`
   }
 
   .login {
-    border: 2px solid var(--orange);
-    border-radius: 5px;
+    border: 1px solid var(--orange);
+    border-radius: 15px;
     padding: 5px 10px;
     background-color: transparent;
     color: white;

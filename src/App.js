@@ -34,7 +34,7 @@ function App() {
             <Route path='/contact' element={<ContactUs />} />
           </Routes>
         </WrapperGrow>
-        {/* <Footer /> */}
+        <Footer />
       </BrowserRouter>
     </Wrapper>
   );
@@ -50,5 +50,6 @@ const WrapperGrow = styled.section`
 
 export default App;
 
-// Work on the search component and it's loading state.
-// Write the test for search products route.
+// Delay the transition of the carousel.
+// Update the font.
+// No need to hit the database everytime to get user's information just store it in the jwt.

@@ -2,10 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import { useProductsContext } from '../contexts/productsContext';
 import { EMPTY_SEARCH_TERM } from '../utils/actions';
 
-export default function OutsideAlerter(props) {
+export default function OutsideAlerterSearchForm(props) {
   const { dispatch } = useProductsContext();
 
-  function useOutsideAlerter(ref) {
+  function useOutsideAlerterSearchForm(ref) {
     useEffect(() => {
       function handleClickOutside(event) {
         if (ref.current && !ref.current.contains(event.target)) {
@@ -24,7 +24,7 @@ export default function OutsideAlerter(props) {
   }
 
   const wrapperRef = useRef(null);
-  useOutsideAlerter(wrapperRef);
+  useOutsideAlerterSearchForm(wrapperRef);
 
   return <div ref={wrapperRef}>{props.children}</div>;
 }

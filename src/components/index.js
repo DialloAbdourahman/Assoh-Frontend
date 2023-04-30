@@ -10,7 +10,7 @@ import Categories from './Categories';
 import Loading from './Loading';
 import SmallLoading from './SmallLoading';
 import ErrorMessage from './ErrorMessage';
-import OutsideAlerter from './OutsideAlerter';
+import OutsideAlerterSearchForm from './OutsideAlerterSearchForm';
 
 export {
   CategoriesList,
@@ -25,5 +25,5 @@ export {
   Loading,
   SmallLoading,
   ErrorMessage,
-  OutsideAlerter,
+  OutsideAlerterSearchForm,
 };

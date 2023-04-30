@@ -17,32 +17,17 @@ import {
   EMPTY_SEARCH_TERM,
 } from '../utils/actions';
 import { SearchList, MobileSearch, CategoriesList } from './index';
+import OutsideAlerterAccountInfo from './OutsideAlerterAccountInfo';
 import { API_LINK } from '../utils/constants';
 import axios from 'axios';
+import AccountInfo from './AccountInfo';
 
 const Navbar = () => {
   const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const [showAccountInfo, setShowAccountInfo] = useState(false);
   const { light, user, dispatch } = useGlobalContext();
   const { searchTerm, dispatch: dispatchProductContext } = useProductsContext();
   const navigate = useNavigate();
-
-  const logout = async () => {
-    try {
-      dispatch({ type: SET_LOADING_TRUE });
-
-      await axios({
-        method: 'POST',
-        url: `${API_LINK}/users/logout`,
-        headers: { Authorization: 'Bearer ' + user.token },
-      });
-
-      localStorage.removeItem('user');
-      dispatch({ type: SET_USER });
-      dispatch({ type: SET_LOADING_FALSE });
-    } catch (error) {
-      dispatch({ type: SET_LOADING_FALSE });
-    }
-  };
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -127,11 +112,7 @@ const Navbar = () => {
         >
           Help
         </NavLink>
-        {user.email ? (
-          <button className='login' onClick={logout}>
-            Log out
-          </button>
-        ) : (
+        {!user.email && (
           <NavLink
             to={'/login'}
             className={({ isActive }) =>
@@ -152,9 +133,15 @@ const Navbar = () => {
           </div>
         </NavLink>
         {user.email && (
-          <Link to={'/account'} className='account'>
-            {user.name.substring(0, 2)}
-          </Link>
+          <button
+            className='account'
+            onClick={() => setShowAccountInfo(!showAccountInfo)}
+          >
+            {user.name.substring(0, 1)}
+          </button>
+        )}
+        {showAccountInfo && (
+          <AccountInfo setShowAccountInfo={setShowAccountInfo} />
         )}
         <button
           className='theme'
@@ -188,12 +175,12 @@ export default Navbar;
 
 const Wrapper = styled.nav`
   color: white;
-  transition: background var(--themetransitionspeed) linear;
 
   .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-top: 5px;
   }
 
   .cart {
@@ -273,6 +260,9 @@ const Wrapper = styled.nav`
     padding: 5px 10px;
     background-color: transparent;
     color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .toggle-sidebar {
@@ -321,10 +311,12 @@ const Wrapper = styled.nav`
   .account {
     background-color: var(--orange);
     color: white;
-    padding: 5px;
+    padding: 2px 8px;
     border-radius: 50%;
     text-transform: uppercase;
     font-weight: bold;
+    font-size: 20px;
+    position: relative;
   }
 
   .logo a,

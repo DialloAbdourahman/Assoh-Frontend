@@ -12,7 +12,7 @@ function App() {
     <Wrapper style={{ background: `${light ? 'white' : 'var(--black)'}` }}>
       <BrowserRouter>
         <Navbar />
-        <SubMenu />
+        {/* <SubMenu /> */}
         <Sidebar />
         {loading && <Loading />}
         <WrapperGrow>
@@ -40,9 +40,7 @@ function App() {
   );
 }
 
-const Wrapper = styled.section`
-  transition: background var(--themetransitionspeed) linear;
-`;
+const Wrapper = styled.section``;
 
 const WrapperGrow = styled.section`
   min-height: calc(100vh - (59px + 18px));
@@ -50,6 +48,5 @@ const WrapperGrow = styled.section`
 
 export default App;
 
-// Delay the transition of the carousel.
-// Update the font.
-// No need to hit the database everytime to get user's information just store it in the jwt.
+// Make sure that we don't have to fetch data everytime we open the account information.
+// manage the manage account and logout button and give them a hover effect and reduce their width.

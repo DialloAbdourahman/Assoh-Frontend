@@ -2,19 +2,19 @@ import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useProductsContext } from '../contexts/productsContext';
-import { SmallLoading, OutsideAlerter } from '../components';
+import { SmallLoading, OutsideAlerterSearchForm } from '../components';
 import { EMPTY_SEARCH_TERM } from '../utils/actions';
 
 const SearchList = () => {
   const { searchedProducts, searchTerm, searchProductsLoading, dispatch } =
     useProductsContext();
 
-  if (searchProductsLoading) {
+  if (searchProductsLoading && searchTerm !== '') {
     return (
       <Wrapper>
-        <OutsideAlerter>
+        <OutsideAlerterSearchForm>
           <SmallLoading />
-        </OutsideAlerter>
+        </OutsideAlerterSearchForm>
       </Wrapper>
     );
   }
@@ -22,9 +22,9 @@ const SearchList = () => {
   if (searchTerm && searchedProducts.length === 0) {
     return (
       <Wrapper>
-        <OutsideAlerter>
+        <OutsideAlerterSearchForm>
           <p className='nothing'>No product matched your search</p>
-        </OutsideAlerter>
+        </OutsideAlerterSearchForm>
       </Wrapper>
     );
   }
@@ -35,7 +35,7 @@ const SearchList = () => {
 
   return (
     <Wrapper>
-      <OutsideAlerter>
+      <OutsideAlerterSearchForm>
         {searchedProducts.map((product) => {
           return (
             <Link
@@ -47,32 +47,32 @@ const SearchList = () => {
             </Link>
           );
         })}
-      </OutsideAlerter>
+      </OutsideAlerterSearchForm>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
   position: absolute;
-  top: 74%;
+  top: 85%;
   width: 100%;
-  background-color: var(--lightgrey);
+  background-color: white;
   padding: 5px 10px;
   border-radius: 3px;
-  border: 1px solid black;
   z-index: 300;
+  box-shadow: 0px 0px 3px var(--lightblack);
 
   a {
     display: block;
     margin: 10px 0;
-    padding: 5px 0;
-    color: var(--black);
-    font-weight: bold;
+    padding: 5px 20px;
+    color: var(--darkblue);
+    font-weight: normal;
     transition: transform 0.3s linear;
   }
 
   a:hover {
-    transform: translateX(3%);
+    transform: translateX(2%);
   }
 
   .nothing {

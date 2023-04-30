@@ -42,26 +42,26 @@ const CategoriesList = () => {
 };
 
 const Wrapper = styled.div`
-  background-color: var(--lightgrey);
+  background-color: white;
   padding: 5px 10px;
   border-radius: 3px;
-  border: 1px solid black;
+  box-shadow: 0px 0px 3px var(--lightblack);
 
   position: absolute;
-  top: 100%;
+  top: 85%;
   right: 50%;
-  left: 50%;
+  left: 160%;
   z-index: 100;
   transform: translate(-50%, 0);
-  width: 250%;
+  width: 450%;
   display: none;
 
   a {
     display: block;
     margin: 10px 0;
     padding: 5px 0;
-    /* color: var(--black); */
-    font-weight: bold;
+    color: var(--darkblue);
+    font-weight: normal;
     transition: padding 0.3s linear;
   }
 

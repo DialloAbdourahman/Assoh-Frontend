@@ -142,7 +142,6 @@ const Wrapper = styled.section`
     grid-template-columns: 1fr 2fr;
     align-items: center;
     grid-gap: 50px;
-    transition: background var(--themetransitionspeed) linear;
     margin-right: 50px;
   }
 

@@ -46,7 +46,7 @@ const Wrapper = styled.section`
 
   .slide {
     width: 100vw;
-    height: 300px;
+    height: 400px;
   }
 `;
 

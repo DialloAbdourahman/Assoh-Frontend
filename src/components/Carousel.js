@@ -41,12 +41,12 @@ const Wrapper = styled.section`
     object-fit: cover;
     height: 100%;
     width: 100%;
-    /* opacity: 0.7; */
   }
 
   .slide {
     width: 100vw;
     height: 400px;
+    display: block;
   }
 `;
 

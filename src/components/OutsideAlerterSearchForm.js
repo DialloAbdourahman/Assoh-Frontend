@@ -10,7 +10,9 @@ export default function OutsideAlerterSearchForm(props) {
       function handleClickOutside(event) {
         if (ref.current && !ref.current.contains(event.target)) {
           if (event.target.id !== 'search') {
-            dispatch({ type: EMPTY_SEARCH_TERM });
+            if (event.target.id !== 'item') {
+              dispatch({ type: EMPTY_SEARCH_TERM });
+            }
           }
         }
       }

@@ -1,11 +1,15 @@
 import React from 'react';
+import styled from 'styled-components';
 
 const Footer = () => {
-  return (
-    <div>
-      I am the footer. Please tell that stupid Abdourahman to make me prettier.
-    </div>
-  );
+  return <Wrapper>Copyright Assoh all rights reserved.</Wrapper>;
 };
 
 export default Footer;
+
+const Wrapper = styled.footer`
+  background-color: var(--darkblue);
+  text-align: center;
+  padding: 20px 0;
+  color: var(--lightgrey);
+`;

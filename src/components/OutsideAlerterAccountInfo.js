@@ -5,7 +5,9 @@ export default function OutsideAlerterAccountInfo(props) {
     useEffect(() => {
       function handleClickOutside(event) {
         if (ref.current && !ref.current.contains(event.target)) {
-          props.setShowAccountInfo(false);
+          if (event.target.id !== 'account') {
+            props.setShowAccountInfo(false);
+          }
         }
       }
       // Bind the event listener

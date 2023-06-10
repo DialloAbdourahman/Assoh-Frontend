@@ -10,16 +10,10 @@ import {
   OPEN_SIDEBAR,
   TOGGLE_THEME,
   CLOSE_SIDEBAR,
-  SET_USER,
-  SET_LOADING_TRUE,
-  SET_LOADING_FALSE,
   SET_SEARCH_TERM,
   EMPTY_SEARCH_TERM,
 } from '../utils/actions';
 import { SearchList, MobileSearch, CategoriesList } from './index';
-import OutsideAlerterAccountInfo from './OutsideAlerterAccountInfo';
-import { API_LINK } from '../utils/constants';
-import axios from 'axios';
 import AccountInfo from './AccountInfo';
 
 const Navbar = () => {
@@ -39,6 +33,12 @@ const Navbar = () => {
     dispatchProductContext({ type: EMPTY_SEARCH_TERM });
   };
 
+  const showAccountIsShowAccountStateIsFalse = () => {
+    if (showAccountInfo === false) {
+      setShowAccountInfo(true);
+    }
+  };
+
   useEffect(() => {
     const checkSize = () => {
       if (window.innerWidth > 500) {
@@ -54,11 +54,7 @@ const Navbar = () => {
   }, [dispatch]);
 
   return (
-    <Wrapper
-      style={{
-        background: `${light ? 'var(--darkblue)' : 'var(--lightblack)'}`,
-      }}
-    >
+    <Wrapper light={light}>
       <div className='container'>
         <h1 className='logo'>
           <Link to={'/'}>ASSOH</Link>
@@ -134,15 +130,18 @@ const Navbar = () => {
         </NavLink>
         {user.email && (
           <button
+            id='account'
             className='account'
-            onClick={() => setShowAccountInfo(!showAccountInfo)}
+            // onClick={() => setShowAccountInfo(!showAccountInfo)}
+            onClick={showAccountIsShowAccountStateIsFalse}
           >
             {user.name.substring(0, 1)}
           </button>
         )}
-        {showAccountInfo && (
-          <AccountInfo setShowAccountInfo={setShowAccountInfo} />
-        )}
+        <AccountInfo
+          showAccountInfo={showAccountInfo}
+          setShowAccountInfo={setShowAccountInfo}
+        />
         <button
           className='theme'
           onClick={() => {
@@ -175,6 +174,8 @@ export default Navbar;
 
 const Wrapper = styled.nav`
   color: white;
+  background-color: ${(props) =>
+    props.light ? 'var(--darkblue)' : 'var(--lightblack)'};
 
   .container {
     display: flex;
@@ -351,9 +352,7 @@ const Wrapper = styled.nav`
     .toggle-sidebar {
       display: block;
     }
-  }
 
-  @media (max-width: 650px) {
     .category-container {
       display: none;
     }

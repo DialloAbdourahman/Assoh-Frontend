@@ -5,7 +5,7 @@ import { useProductsContext } from '../contexts/productsContext';
 import { SmallLoading, OutsideAlerterSearchForm } from '../components';
 import { EMPTY_SEARCH_TERM } from '../utils/actions';
 
-const SearchList = () => {
+const SearchList = ({ setShowMobileSearch }) => {
   const { searchedProducts, searchTerm, searchProductsLoading, dispatch } =
     useProductsContext();
 
@@ -34,17 +34,33 @@ const SearchList = () => {
   }
 
   return (
-    <Wrapper>
+    <Wrapper id='item'>
       <OutsideAlerterSearchForm>
         {searchedProducts.map((product) => {
           return (
-            <Link
-              to={`/product/${product.id}`}
-              key={product.id}
-              onClick={() => dispatch({ type: EMPTY_SEARCH_TERM })}
-            >
-              {product.name}
-            </Link>
+            <>
+              <Link
+                to={`/product/${product.id}`}
+                key={product.id}
+                onClick={() => dispatch({ type: EMPTY_SEARCH_TERM })}
+                className='desktopSearch'
+                id='item'
+              >
+                {product.name}
+              </Link>
+              <Link
+                to={`/product/${product.id}`}
+                key={product.id}
+                onClick={() => {
+                  dispatch({ type: EMPTY_SEARCH_TERM });
+                  setShowMobileSearch(false);
+                }}
+                className='mobileSearch'
+                id='item'
+              >
+                {product.name}
+              </Link>
+            </>
           );
         })}
       </OutsideAlerterSearchForm>
@@ -78,6 +94,24 @@ const Wrapper = styled.div`
   .nothing {
     padding: 5px 0;
     color: var(--black);
+  }
+
+  .desktopSearch {
+    display: block;
+  }
+
+  .mobileSearch {
+    display: none;
+  }
+
+  @media (max-width: 500px) {
+    .desktopSearch {
+      display: none;
+    }
+
+    .mobileSearch {
+      display: block;
+    }
   }
 `;
 

@@ -5,7 +5,6 @@ import { MdEdit } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../contexts/globalContext';
 import { API_LINK } from '../utils/constants';
-import SmallLoading from './SmallLoading';
 import OutsideAlerterAccountInfo from './OutsideAlerterAccountInfo';
 import {
   SET_LOADING_TRUE,
@@ -13,10 +12,8 @@ import {
   SET_LOADING_FALSE,
 } from '../utils/actions';
 
-const AccountInfo = ({ setShowAccountInfo }) => {
-  const [profile, setProfile] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+const AccountInfo = ({ showAccountInfo, setShowAccountInfo }) => {
+  const [profile, setProfile] = useState('');
   const { user, dispatch } = useGlobalContext();
 
   const navigate = useNavigate();
@@ -54,17 +51,16 @@ const AccountInfo = ({ setShowAccountInfo }) => {
         headers: { Authorization: 'Bearer ' + user.token },
       });
 
-      setLoading(false);
-      setError(false);
-      console.log(data);
+      setProfile(data.avatarUrl.split(' ')[1]);
+      // console.log(data);
     } catch (error) {
-      setLoading(false);
-      setError(true);
+      console.log(error);
     }
   };
 
   useEffect(() => {
     getProfile();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -78,40 +74,16 @@ const AccountInfo = ({ setShowAccountInfo }) => {
     return () => {
       window.removeEventListener('resize', checkSize);
     };
+    // eslint-disable-next-line
   }, []);
 
-  if (loading) {
-    return (
-      <Wrapper>
-        <OutsideAlerterAccountInfo setShowAccountInfo={setShowAccountInfo}>
-          <SmallLoading />
-        </OutsideAlerterAccountInfo>
-      </Wrapper>
-    );
-  }
-
-  if (error) {
-    return (
-      <Wrapper>
-        <OutsideAlerterAccountInfo setShowAccountInfo={setShowAccountInfo}>
-          <p style={{ color: 'red', textAlign: 'center', padding: '10px 0' }}>
-            Error
-          </p>
-        </OutsideAlerterAccountInfo>
-      </Wrapper>
-    );
-  }
-
   return (
-    <Wrapper>
+    <Wrapper style={{ display: `${showAccountInfo ? 'block' : 'none'}` }}>
       <OutsideAlerterAccountInfo setShowAccountInfo={setShowAccountInfo}>
-        {' '}
         <div className='profile'>
           <p className='name'>{user.name}</p>
           <img
-            src={`${
-              profile?.avatarUrl ? profile?.avatarUrl : '/images/background.png'
-            }`}
+            src={`${profile !== '' ? profile : '/images/background.png'}`}
             alt=''
           />
           <button className='icon' onClick={goToAccount}>
@@ -145,7 +117,6 @@ const Wrapper = styled.article`
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    border: 1px solid black;
     transform: translateY(40%);
   }
 
@@ -196,5 +167,10 @@ const Wrapper = styled.article`
     background-color: transparent;
     border: none;
     outline: none;
+    transition: all 0.2s linear;
+  }
+
+  button:hover {
+    font-weight: bold;
   }
 `;

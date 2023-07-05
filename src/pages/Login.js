@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useAuthContext } from '../contexts/authContext';
 import { useGlobalContext } from '../contexts/globalContext';
 import { MdEmail } from 'react-icons/md';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { API_LINK } from '../utils/constants';
+import { axiosInstance } from '../axios/instance';
 import {
   SET_USER,
   SET_LOADING_TRUE,
@@ -18,14 +18,16 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [userType, setUserType] = useState('customer');
 
-  const { light, dispatch } = useGlobalContext();
+  const { dispatch } = useAuthContext();
+  const { dispatch: dispatchGlobal, light } = useGlobalContext();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    dispatch({ type: SET_LOADING_TRUE });
+    dispatchGlobal({ type: SET_LOADING_TRUE });
 
     if (!email || !password) {
       setErrorMessage('Enter all the fields.');
@@ -33,26 +35,23 @@ const Login = () => {
     }
 
     try {
-      const { data } = await axios({
-        method: 'post',
-        url: `${API_LINK}/users/login`,
-        data: {
-          email,
-          password,
-        },
+      const { data } = await axiosInstance.post(`/${userType}/login`, {
+        email,
+        password,
       });
 
-      localStorage.setItem('user', JSON.stringify(data));
+      localStorage.setItem('info', JSON.stringify(data.role));
       dispatch({ type: SET_USER, payload: data });
       navigate('/');
-      dispatch({ type: SET_LOADING_FALSE });
+      dispatchGlobal({ type: SET_LOADING_FALSE });
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.message
         : error.message;
 
       setErrorMessage(errorMessage);
-      dispatch({ type: SET_LOADING_FALSE });
+      console.log(errorMessage);
+      dispatchGlobal({ type: SET_LOADING_FALSE });
     }
   };
 
@@ -69,7 +68,7 @@ const Login = () => {
         style={{ background: `${light ? 'white' : 'var(--lightblack)'}` }}
       >
         <h1 style={{ color: `${light ? 'var(--darkblue)' : 'white'}` }}>
-          Create your business account on ASSOH
+          Login on ASSOH
         </h1>
         <form onSubmit={handleSubmit}>
           {errorMessage && <p className='error-message'>{errorMessage}</p>}
@@ -103,6 +102,18 @@ const Login = () => {
             >
               {passwordOneShown ? <AiFillEye /> : <AiFillEyeInvisible />}
             </button>
+          </div>
+          <div className='input-container'>
+            <select
+              name='userType'
+              id='userType'
+              value={userType}
+              onChange={(e) => setUserType(e.target.value)}
+            >
+              <option value='customer'>Customer</option>
+              <option value='seller'>Seller</option>
+              <option value='admin'>Admin</option>
+            </select>
           </div>
           <button type='submit' className='submit'>
             Log in
@@ -162,7 +173,8 @@ const Wrapper = styled.section`
     position: relative;
   }
 
-  .input-container input {
+  .input-container input,
+  .input-container select {
     width: 100%;
     padding: 10px 40px;
     border-radius: 3px;

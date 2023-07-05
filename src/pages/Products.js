@@ -9,7 +9,6 @@ import {
   SET_LOADING_TRUE,
   SET_PRODUCTS,
 } from '../utils/actions';
-import { Loading } from '../components/index';
 import styled from 'styled-components';
 
 const Products = () => {
@@ -43,10 +42,18 @@ const Products = () => {
   }, [page, state]);
 
   if (loading) {
-    return <></>;
+    return <>Loading</>;
   }
 
   if (products.length === 0) {
+    return (
+      <>
+        <h3>No product matches your search</h3>
+      </>
+    );
+  }
+
+  if (products.length === 0 && state.category) {
     return (
       <>
         {state.category && (

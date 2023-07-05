@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { axiosInstance } from '../axios/instance';
 import styled from 'styled-components';
 import { MdEdit } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../contexts/globalContext';
-import { API_LINK } from '../utils/constants';
+import { useAuthContext } from '../contexts/authContext';
 import OutsideAlerterAccountInfo from './OutsideAlerterAccountInfo';
 import {
   SET_LOADING_TRUE,
@@ -14,7 +14,8 @@ import {
 
 const AccountInfo = ({ showAccountInfo, setShowAccountInfo }) => {
   const [profile, setProfile] = useState('');
-  const { user, dispatch } = useGlobalContext();
+  const { dispatch } = useGlobalContext();
+  const { user, dispatch: dispatchAuth } = useAuthContext();
 
   const navigate = useNavigate();
 
@@ -27,14 +28,18 @@ const AccountInfo = ({ showAccountInfo, setShowAccountInfo }) => {
     try {
       dispatch({ type: SET_LOADING_TRUE });
 
-      await axios({
-        method: 'POST',
-        url: `${API_LINK}/users/logout`,
-        headers: { Authorization: 'Bearer ' + user.token },
-      });
+      await axiosInstance.post(
+        `/${user.role}/logout`,
+        {},
+        {
+          headers: {
+            Authorization: 'Bearer ' + user.accessToken,
+          },
+        }
+      );
 
-      localStorage.removeItem('user');
-      dispatch({ type: SET_USER });
+      localStorage.removeItem('info');
+      dispatchAuth({ type: SET_USER });
       dispatch({ type: SET_LOADING_FALSE });
       navigate('/login');
       setShowAccountInfo(false);
@@ -45,14 +50,17 @@ const AccountInfo = ({ showAccountInfo, setShowAccountInfo }) => {
 
   const getProfile = async () => {
     try {
-      const { data } = await axios({
-        method: 'get',
-        url: `${API_LINK}/users/profile`,
-        headers: { Authorization: 'Bearer ' + user.token },
+      const { data } = await axiosInstance.get(`/${user.role}/profile`, {
+        headers: {
+          Authorization: 'Bearer ' + user.accessToken,
+        },
       });
 
-      setProfile(data.avatarUrl.split(' ')[1]);
-      // console.log(data);
+      if (data.avatarUrl !== null) {
+        setProfile(data.avatarUrl.split(' ')[1]);
+      } else {
+        setProfile('');
+      }
     } catch (error) {
       console.log(error);
     }

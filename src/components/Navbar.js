@@ -5,6 +5,7 @@ import { MdDarkMode, MdLightMode } from 'react-icons/md';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../contexts/globalContext';
+import { useAuthContext } from '../contexts/authContext';
 import { useProductsContext } from '../contexts/productsContext';
 import {
   OPEN_SIDEBAR,
@@ -19,7 +20,8 @@ import AccountInfo from './AccountInfo';
 const Navbar = () => {
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [showAccountInfo, setShowAccountInfo] = useState(false);
-  const { light, user, dispatch } = useGlobalContext();
+  const { light, dispatch } = useGlobalContext();
+  const { user } = useAuthContext();
   const { searchTerm, dispatch: dispatchProductContext } = useProductsContext();
   const navigate = useNavigate();
 
@@ -129,19 +131,21 @@ const Navbar = () => {
           </div>
         </NavLink>
         {user.email && (
-          <button
-            id='account'
-            className='account'
-            // onClick={() => setShowAccountInfo(!showAccountInfo)}
-            onClick={showAccountIsShowAccountStateIsFalse}
-          >
-            {user.name.substring(0, 1)}
-          </button>
+          <>
+            <button
+              id='account'
+              className='account'
+              onClick={showAccountIsShowAccountStateIsFalse}
+            >
+              {user.name.substring(0, 1)}
+            </button>
+            <AccountInfo
+              showAccountInfo={showAccountInfo}
+              setShowAccountInfo={setShowAccountInfo}
+            />
+          </>
         )}
-        <AccountInfo
-          showAccountInfo={showAccountInfo}
-          setShowAccountInfo={setShowAccountInfo}
-        />
+
         <button
           className='theme'
           onClick={() => {

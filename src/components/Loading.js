@@ -1,11 +1,18 @@
 import React from 'react';
 import { CircularProgress } from '@mui/material';
 import styled from 'styled-components';
+import { useGlobalContext } from '../contexts/globalContext';
 
 const Loading = () => {
+  const { loading } = useGlobalContext();
+
   return (
-    <Wrapper>
-      <CircularProgress style={{ color: 'var(--orange)' }} />
+    <Wrapper style={{ display: `${loading ? 'flex' : 'none'}` }}>
+      <CircularProgress
+        style={{
+          color: 'var(--orange)',
+        }}
+      />
     </Wrapper>
   );
 };

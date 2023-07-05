@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
+import { axiosInstance } from '../axios/instance';
 import { Link, useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../contexts/globalContext';
+import { useAuthContext } from '../contexts/authContext';
 import {
   CLOSE_SIDEBAR,
   SET_LOADING_TRUE,
   SET_LOADING_FALSE,
   SET_USER,
 } from '../utils/actions';
-import { API_LINK } from '../utils/constants';
 
 const Sidebar = () => {
-  const { sidebar, dispatch, categories, user } = useGlobalContext();
+  const { sidebar, dispatch, categories } = useGlobalContext();
+  const { user } = useAuthContext();
   const [categoriesOpen, setCategoriesOpen] = useState(true);
 
   const navigate = useNavigate();
@@ -21,13 +22,17 @@ const Sidebar = () => {
     try {
       dispatch({ type: SET_LOADING_TRUE });
 
-      await axios({
-        method: 'POST',
-        url: `${API_LINK}/users/logout`,
-        headers: { Authorization: 'Bearer ' + user.token },
-      });
+      await axiosInstance.post(
+        `/${user.role}/logout`,
+        {},
+        {
+          headers: {
+            Authorization: 'Bearer ' + user.accessToken,
+          },
+        }
+      );
 
-      localStorage.removeItem('user');
+      localStorage.removeItem('info');
       dispatch({ type: SET_USER });
       dispatch({ type: SET_LOADING_FALSE });
       navigate('/login');

@@ -20,7 +20,7 @@ const ProductContext = React.createContext();
 const ProductsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const fetchProducts = async () => {
+  const searchProducts = async () => {
     try {
       dispatch({ type: SET_SEARCHED_PRODUCTS_LOADING, payload: true });
 
@@ -37,7 +37,7 @@ const ProductsProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchProducts();
+    searchProducts();
   }, [state.searchTerm]);
 
   return (

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useGlobalContext } from '../contexts/globalContext';
+import { useAuthContext } from '../contexts/authContext';
 import { GoPencil } from 'react-icons/go';
 import { MdEmail } from 'react-icons/md';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { API_LINK } from '../utils/constants';
+import { axiosInstance } from '../axios/instance';
 import {
   SET_LOADING_FALSE,
   SET_LOADING_TRUE,
@@ -25,6 +25,7 @@ const SignUp = () => {
   });
   const [errorMessage, setErrorMessage] = useState('');
   const { light, dispatch } = useGlobalContext();
+  const { dispatch: dispatchAuth } = useAuthContext();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -35,8 +36,6 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    dispatch({ type: SET_LOADING_TRUE });
 
     if (!data.email || !data.name || !data.password || !data.password2) {
       setErrorMessage('Please enter all the fields');
@@ -49,26 +48,31 @@ const SignUp = () => {
     }
 
     try {
-      const user = await axios({
-        method: 'post',
-        url: `${API_LINK}/users/`,
-        data: {
-          name: data.name,
-          email: data.email,
-          password: data.password,
-        },
+      dispatch({ type: SET_LOADING_TRUE });
+
+      // Create the customer's account
+      await axiosInstance.post('/customer', {
+        name: data.name,
+        email: data.email,
+        password: data.password,
       });
 
-      localStorage.setItem('user', JSON.stringify(user.data));
-      dispatch({ type: SET_USER, payload: user.data });
+      // login the customer automaticaly
+      const customer = await axiosInstance.post(`/customer/login`, {
+        email: data.email,
+        password: data.password,
+      });
+      localStorage.setItem('info', JSON.stringify('customer'));
+      dispatchAuth({ type: SET_USER, payload: customer.data });
       navigate('/');
-      dispatch({ type: SET_LOADING_FALSE });
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.message
         : error.message;
 
       setErrorMessage(errorMessage);
+      console.log(error);
+    } finally {
       dispatch({ type: SET_LOADING_FALSE });
     }
   };
@@ -86,7 +90,7 @@ const SignUp = () => {
         style={{ background: `${light ? 'white' : 'var(--lightblack)'}` }}
       >
         <h1 style={{ color: `${light ? 'var(--darkblue)' : 'white'}` }}>
-          Create your business account on ASSOH
+          Create your account on ASSOH
         </h1>
         <form onSubmit={handleSubmit}>
           {errorMessage && <p className='error-message'>{errorMessage}</p>}

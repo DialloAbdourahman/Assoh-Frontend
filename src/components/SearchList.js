@@ -38,29 +38,32 @@ const SearchList = ({ setShowMobileSearch }) => {
       <OutsideAlerterSearchForm>
         {searchedProducts.map((product) => {
           return (
-            <>
-              <Link
-                to={`/product/${product.id}`}
-                key={product.id}
-                onClick={() => dispatch({ type: EMPTY_SEARCH_TERM })}
-                className='desktopSearch'
-                id='item'
-              >
-                {product.name}
-              </Link>
-              <Link
-                to={`/product/${product.id}`}
-                key={product.id}
-                onClick={() => {
-                  dispatch({ type: EMPTY_SEARCH_TERM });
-                  setShowMobileSearch(false);
-                }}
-                className='mobileSearch'
-                id='item'
-              >
-                {product.name}
-              </Link>
-            </>
+            <React.Fragment key={product.id}>
+              {!setShowMobileSearch ? (
+                <Link
+                  to={'/products'}
+                  state={{ name: product.name, page: 1, category: '' }}
+                  onClick={() => dispatch({ type: EMPTY_SEARCH_TERM })}
+                  className='desktopSearch'
+                  id='item'
+                >
+                  {product.name}
+                </Link>
+              ) : (
+                <Link
+                  to={'/products'}
+                  state={{ name: product.name, page: 1, category: '' }}
+                  onClick={() => {
+                    dispatch({ type: EMPTY_SEARCH_TERM });
+                    setShowMobileSearch(false);
+                  }}
+                  className='mobileSearch'
+                  id='item'
+                >
+                  {product.name}
+                </Link>
+              )}
+            </React.Fragment>
           );
         })}
       </OutsideAlerterSearchForm>

@@ -13,6 +13,7 @@ const initialState = {
   single_product: {},
   searchTerm: '',
   searchedProducts: [],
+  cart: [],
 };
 
 const ProductContext = React.createContext();

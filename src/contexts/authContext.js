@@ -27,6 +27,7 @@ const AuthProvider = ({ children }) => {
     try {
       const { data } = await axiosInstance.post(`/${link}/token`);
       dispatch({ type: SET_USER, payload: data });
+      console.log('Token refresh');
     } catch (error) {
       console.log(error);
       dispatch({ type: SET_USER });
@@ -35,14 +36,12 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     refreshToken(state.user?.info);
-    console.log('initial token refresh');
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (state.user.email) {
         refreshToken(state.user?.role);
-        console.log('Token refreshed');
       }
     }, 780000);
     return () => clearInterval(interval);

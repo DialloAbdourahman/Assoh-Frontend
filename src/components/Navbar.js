@@ -28,6 +28,10 @@ const Navbar = () => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
 
+    if (!searchTerm) {
+      return;
+    }
+
     navigate('/products', {
       state: { name: searchTerm, page: 1, category: '' },
     });

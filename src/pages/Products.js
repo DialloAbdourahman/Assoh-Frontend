@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
-import { API_LINK } from '../utils/constants';
+import { axiosInstance } from '../axios/instance';
 import { useProductsContext } from '../contexts/productsContext';
 import { useGlobalContext } from '../contexts/globalContext';
 import {
@@ -10,6 +9,8 @@ import {
   SET_PRODUCTS,
 } from '../utils/actions';
 import styled from 'styled-components';
+import ProductsFilters from '../components/ProductsFilters';
+import ProductsList from '../components/ProductsList';
 
 const Products = () => {
   const { state } = useLocation();
@@ -19,46 +20,51 @@ const Products = () => {
     loading,
     categories,
   } = useGlobalContext();
+  const [rating, setRating] = useState(0);
+  const [price, setPrice] = useState([0, 1000000]);
+  const [validateFilters, setValidateFilters] = useState(false);
+  const [nameSort, setNameSort] = useState('asc');
   const { products, dispatch } = useProductsContext();
+
+  const resetFilters = () => {
+    setRating(0);
+    setPrice([0, 1000000]);
+    setNameSort('asc');
+    setValidateFilters(!validateFilters);
+  };
 
   const fetchProducts = async () => {
     try {
       dispatchGlobalContext({ type: SET_LOADING_TRUE });
 
-      const { data } = await axios({
-        method: 'get',
-        url: `${API_LINK}/products?name=${state.name}&page=${page}&categoryId=${state.category}`,
-      });
+      const { data } = await axiosInstance.get(
+        `/products?name=${state?.name}&page=${page}&categoryId=${state?.category}&nameSort=${nameSort}&minPrice=${price[0]}&maxPrice=${price[1]}&rating=${rating}`
+      );
 
       dispatch({ type: SET_PRODUCTS, payload: data });
       dispatchGlobalContext({ type: SET_LOADING_FALSE });
     } catch (error) {
-      dispatch({ type: SET_LOADING_FALSE, payload: false });
+      dispatchGlobalContext({ type: SET_LOADING_FALSE });
     }
   };
 
   useEffect(() => {
     fetchProducts();
-  }, [page, state]);
+  }, [page, state, validateFilters]);
 
   if (loading) {
-    return <>Loading</>;
+    return <></>;
   }
 
-  if (products.length === 0) {
+  if (products.length === 0 && state?.category) {
     return (
       <>
-        <h3>No product matches your search</h3>
-      </>
-    );
-  }
-
-  if (products.length === 0 && state.category) {
-    return (
-      <>
-        {state.category && (
+        {state?.category && (
           <h1>
-            {categories.find((category) => category.id === state.category).name}{' '}
+            {
+              categories.find((category) => category.id === state?.category)
+                ?.name
+            }
             category
           </h1>
         )}
@@ -68,22 +74,35 @@ const Products = () => {
   }
 
   return (
-    <Wrapper>
-      {state.category && (
-        <h1>
-          {categories.find((category) => category.id === state.category).name}{' '}
-          category
-        </h1>
-      )}
-      <div className='products-container'>
-        {products.map((product) => {
-          return <h1 key={product.id}>{product.name}</h1>;
-        })}
+    <Wrapper className='container'>
+      <div className='align'>
+        <ProductsFilters
+          rating={rating}
+          setRating={setRating}
+          price={price}
+          setPrice={setPrice}
+          nameSort={nameSort}
+          setNameSort={setNameSort}
+          validateFilters={validateFilters}
+          setValidateFilters={setValidateFilters}
+          resetFilters={resetFilters}
+        />
+        <ProductsList
+          state={state}
+          categories={categories}
+          products={products}
+        />
       </div>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.section``;
+const Wrapper = styled.section`
+  .align {
+    display: flex;
+    justify-content: space-between;
+    min-height: 100%;
+  }
+`;
 
 export default Products;

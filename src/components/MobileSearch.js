@@ -19,6 +19,7 @@ const MobileSearch = ({ setShowMobileSearch }) => {
     });
 
     dispatchProductContext({ type: EMPTY_SEARCH_TERM });
+    setShowMobileSearch(false);
   };
 
   return (

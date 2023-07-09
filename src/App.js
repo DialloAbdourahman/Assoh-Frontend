@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import {
   Home,
   Login,
@@ -8,17 +8,17 @@ import {
   Products,
   Error,
   Unauthorized,
+  SingleProduct,
+  SingleProductPayment,
 } from './pages';
 import ProtectAdmin from './components/ProtectAdmin';
 import { useGlobalContext } from './contexts/globalContext';
-import { useAuthContext } from './contexts/authContext';
 import { Navbar, Sidebar, Footer } from './components';
 import styled from 'styled-components';
 import Loading from './components/Loading';
 
 function App() {
   const { light } = useGlobalContext();
-  const { user } = useAuthContext();
   return (
     <Wrapper style={{ background: `${light ? 'white' : 'var(--black)'}` }}>
       <BrowserRouter>
@@ -33,6 +33,11 @@ function App() {
             <Route path='/signup' element={<SignUp />} />
             <Route path='/products' element={<Products />} />
             <Route path='/contact' element={<ContactUs />} />
+            <Route path='/product/:id' element={<SingleProduct />} />
+            <Route
+              path='/singleProductPayment'
+              element={<SingleProductPayment />}
+            />
 
             {/* Admin Routes  */}
             <Route
@@ -67,5 +72,4 @@ const WrapperGrow = styled.section`
 
 export default App;
 
-// Make sure that we don't have to fetch data everytime we open the account information.
-// manage the manage account and logout button and give them a hover effect and reduce their width.
+// Work on the cart page, finish the total price calculation, create a payment page with all the cart products, and the account page

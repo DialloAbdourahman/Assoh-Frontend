@@ -21,6 +21,7 @@ const Navbar = () => {
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const [showAccountInfo, setShowAccountInfo] = useState(false);
   const { light, dispatch } = useGlobalContext();
+  const { cartAmount } = useProductsContext();
   const { user } = useAuthContext();
   const { searchTerm, dispatch: dispatchProductContext } = useProductsContext();
   const navigate = useNavigate();
@@ -131,7 +132,7 @@ const Navbar = () => {
           <p className='cart-text'>Cart</p>
           <AiOutlineShoppingCart className='cart-icon' />
           <div className='cart-number'>
-            <span>6</span>
+            <span>{cartAmount}</span>
           </div>
         </NavLink>
         {user.email && (

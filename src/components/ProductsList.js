@@ -1,8 +1,45 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useProductsContext } from '../contexts/productsContext';
+import { ADD_TO_CART } from '../utils/actions';
 
 const ProductsList = ({ state, categories, products }) => {
+  const { dispatch, cart } = useProductsContext();
+  const navigate = useNavigate();
+
+  const addToCart = (product) => {
+    const productExist = cart.find((item) => item.id === product.id);
+
+    if (productExist) {
+      alert('Product is added to the cart already.');
+      return;
+    }
+
+    dispatch({ type: ADD_TO_CART, payload: product });
+  };
+
+  const payment = (product) => {
+    navigate('/singleProductPayment', { state: { ...product, amount: 1 } });
+  };
+
+  if (products.length === 0 && state?.category) {
+    return (
+      <Wrapper>
+        {state?.category && (
+          <h1 className='no-products'>
+            No product matches the "
+            {
+              categories.find((category) => category.id === state?.category)
+                ?.name
+            }
+            " Category
+          </h1>
+        )}
+      </Wrapper>
+    );
+  }
+
   if (products.length === 0) {
     return (
       <Wrapper>
@@ -24,105 +61,47 @@ const ProductsList = ({ state, categories, products }) => {
         <h1 className='title'>Result for the Search "{state?.name}"</h1>
       )}
       <div className='products-container'>
-        {products.map(
-          ({ id, name, imagesUrl, price, quantity, description }) => {
-            return (
-              <article className='single-product' key={id}>
-                <Link to={'/'}>
-                  <div className='image-center'>
-                    <img src={imagesUrl[0]?.split(' ')[1]} alt='' />
-                  </div>
-                  <p className='name'>
-                    <span className='bold'>Name: </span>
-                    {name}
-                  </p>
-                  <p className='decription'>
-                    <span className='bold'>Description: </span>
-                    {description.substring(0, 70)}...
-                  </p>
-                  <p className='quantity'>
-                    <span className='bold'>Quantity available: </span>
-                    {quantity}
-                  </p>
-                  <p className='price'>
-                    <span className='bold'>Price: </span>
-                    <span className='orange'>{price} FCFA</span>
-                  </p>
-                </Link>
-                <div className='btn-container'>
-                  <button disabled={quantity < 1 && true}>Add to Cart</button>
-                  <button disabled={quantity < 1 && true}>Order Now</button>
+        {products.map((product) => {
+          return (
+            <article className='single-product' key={product.id}>
+              <Link to={`/product/${product.id}`}>
+                <div className='image-center'>
+                  <img src={product?.imagesUrl[0]?.split(' ')[1]} alt='' />
                 </div>
-              </article>
-            );
-          }
-        )}
-        {products.map(
-          ({ id, name, imagesUrl, price, quantity, description }) => {
-            return (
-              <article className='single-product' key={id}>
-                <Link to={'/'}>
-                  <div className='image-center'>
-                    <img src={imagesUrl[0]?.split(' ')[1]} alt='' />
-                  </div>
-                  <p className='name'>
-                    <span className='bold'>Name: </span>
-                    {name}
-                  </p>
-                  <p className='decription'>
-                    <span className='bold'>Description: </span>
-                    {description.substring(0, 70)}...
-                  </p>
-                  <p className='quantity'>
-                    <span className='bold'>Quantity available: </span>
-                    {quantity}
-                  </p>
-                  <p className='price'>
-                    <span className='bold'>Price: </span>
-                    <span className='orange'>{price} FCFA</span>
-                  </p>
-                </Link>
-                <div className='btn-container'>
-                  <button disabled={quantity < 1 && true}>Add to Cart</button>
-                  <button disabled={quantity < 1 && true}>Order Now</button>
-                </div>
-              </article>
-            );
-          }
-        )}
-        {products.map(
-          ({ id, name, imagesUrl, price, quantity, description }) => {
-            return (
-              <article className='single-product' key={id}>
-                <Link to={'/'}>
-                  <div className='image-center'>
-                    <img src={imagesUrl[0]?.split(' ')[1]} alt='' />
-                  </div>
-                  <p className='name'>
-                    <span className='bold'>Name: </span>
-                    {name}
-                  </p>
-                  <p className='decription'>
-                    <span className='bold'>Description: </span>
-                    {description.substring(0, 70)}...
-                  </p>
-                  <p className='quantity'>
-                    <span className='bold'>Quantity available: </span>
-                    {quantity}
-                  </p>
-                  <p className='price'>
-                    <span className='bold'>Price: </span>
-                    <span className='orange'>{price} FCFA</span>
-                  </p>
-                </Link>
-                <div className='btn-container'>
-                  <button disabled={quantity < 1 && true}>Add to Cart</button>
-                  <button disabled={quantity < 1 && true}>Order Now</button>
-                </div>
-              </article>
-            );
-          }
-        )}
+                <p className='name'>
+                  <span className='bold'>Name: </span>
+                  {product.name}
+                </p>
+                <p className='decription'>
+                  <span className='bold'>Description: </span>
+                  {product.description.substring(0, 70)}...
+                </p>
+                <p className='quantity'>
+                  <span className='bold'>Quantity available: </span>
+                  {product.quantity}
+                </p>
+                <p className='price'>
+                  <span className='bold'>Price: </span>
+                  <span className='orange'>{product.price} FCFA</span>
+                </p>
+              </Link>
+              <div className='btn-container'>
+                <button
+                  disabled={product.quantity < 1 && true}
+                  onClick={() => addToCart(product)}
+                >
+                  Add to Cart
+                </button>
+                <button
+                  disabled={product.quantity < 1 && true}
+                  onClick={() => payment(product)}
+                >
+                  Order Now
+                </button>
+              </div>
+            </article>
+          );
+        })}
       </div>
     </Wrapper>
   );

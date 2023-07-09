@@ -44,6 +44,7 @@ const Categories = () => {
 
 const Wrapper = styled.section`
   color: var(--black);
+  margin-bottom: 20px;
 
   h1 {
     margin: 20px 0;

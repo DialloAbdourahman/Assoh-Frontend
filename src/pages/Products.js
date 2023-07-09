@@ -56,23 +56,6 @@ const Products = () => {
     return <></>;
   }
 
-  if (products.length === 0 && state?.category) {
-    return (
-      <>
-        {state?.category && (
-          <h1>
-            {
-              categories.find((category) => category.id === state?.category)
-                ?.name
-            }
-            category
-          </h1>
-        )}
-        <h3>No product matches this category</h3>
-      </>
-    );
-  }
-
   return (
     <Wrapper className='container'>
       <div className='align'>

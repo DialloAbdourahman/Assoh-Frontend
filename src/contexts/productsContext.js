@@ -5,15 +5,17 @@ import { API_LINK } from '../utils/constants';
 import {
   SET_SEARCHED_PRODUCTS_LOADING,
   SET_SEARCHED_PRODUCTS,
+  CALCULATE_CART_TOTAL,
 } from '../utils/actions';
 
 const initialState = {
   products: [],
   searchProductsLoading: false,
-  single_product: {},
   searchTerm: '',
   searchedProducts: [],
   cart: [],
+  cartAmount: 0,
+  cartTotalPrice: 0,
 };
 
 const ProductContext = React.createContext();
@@ -40,6 +42,10 @@ const ProductsProvider = ({ children }) => {
   useEffect(() => {
     searchProducts();
   }, [state.searchTerm]);
+
+  useEffect(() => {
+    dispatch({ type: CALCULATE_CART_TOTAL });
+  }, [state.cart]);
 
   return (
     <ProductContext.Provider value={{ ...state, dispatch }}>

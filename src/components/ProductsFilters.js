@@ -36,7 +36,6 @@ const ProductsFilters = ({
           value={rating}
           size='large'
           onChange={(event, newValue) => {
-            console.log(newValue);
             setRating(newValue);
           }}
         />

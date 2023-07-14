@@ -10,8 +10,15 @@ import {
   Unauthorized,
   SingleProduct,
   SingleProductPayment,
+  SellerInfo,
+  Account,
+  Cart,
+  PayCartProducts,
 } from './pages';
 import ProtectAdmin from './components/ProtectAdmin';
+import ProtectSeller from './components/ProtectSeller';
+import ProtectCustomer from './components/ProtectCustomer';
+import ProtectLogin from './components/ProtectLogin';
 import { useGlobalContext } from './contexts/globalContext';
 import { Navbar, Sidebar, Footer } from './components';
 import styled from 'styled-components';
@@ -37,6 +44,19 @@ function App() {
             <Route
               path='/singleProductPayment'
               element={<SingleProductPayment />}
+            />
+            <Route path='/payCartProducts' element={<PayCartProducts />} />
+            <Route path='/cart' element={<Cart />} />
+            <Route path='/sellerInfo/:id' element={<SellerInfo />} />
+
+            {/* Logged in Routes */}
+            <Route
+              path='/account'
+              element={
+                <ProtectLogin>
+                  <Account />
+                </ProtectLogin>
+              }
             />
 
             {/* Admin Routes  */}
@@ -72,4 +92,11 @@ const WrapperGrow = styled.section`
 
 export default App;
 
-// Work on the cart page, finish the total price calculation, create a payment page with all the cart products, and the account page
+// Put all the required restrictions.
+// Seller info page (when we click on seller info on the single product page).
+// Account page.
+// Work on the css.
+
+// Work on the seller dashboard.
+
+// Work on the admin dashboard.

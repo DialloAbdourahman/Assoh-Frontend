@@ -27,9 +27,9 @@ const AuthProvider = ({ children }) => {
     try {
       const { data } = await axiosInstance.post(`/${link}/token`);
       dispatch({ type: SET_USER, payload: data });
-      console.log('Token refresh');
+      // console.log('Token refresh');
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       dispatch({ type: SET_USER });
     }
   };

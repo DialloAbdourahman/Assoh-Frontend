@@ -6,7 +6,11 @@ import Products from './Products';
 import Error from './Error';
 import Unauthorized from './Unauthorized';
 import SingleProduct from './SingleProduct';
+import SellerInfo from './SellerInfo';
+import Account from './Account';
 import SingleProductPayment from './SingleProductPayment';
+import PayCartProducts from './PayCartProducts';
+import Cart from './Cart';
 
 export {
   Home,
@@ -17,5 +21,9 @@ export {
   Error,
   Unauthorized,
   SingleProduct,
+  SellerInfo,
+  Account,
   SingleProductPayment,
+  Cart,
+  PayCartProducts,
 };

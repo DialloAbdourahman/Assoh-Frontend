@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useProductsContext } from '../contexts/productsContext';
 import { ADD_TO_CART } from '../utils/actions';
 
 const ProductsList = ({ state, categories, products }) => {
   const { dispatch, cart } = useProductsContext();
-  const navigate = useNavigate();
 
   const addToCart = (product) => {
     const productExist = cart.find((item) => item.id === product.id);
@@ -17,10 +16,6 @@ const ProductsList = ({ state, categories, products }) => {
     }
 
     dispatch({ type: ADD_TO_CART, payload: product });
-  };
-
-  const payment = (product) => {
-    navigate('/singleProductPayment', { state: { ...product, amount: 1 } });
   };
 
   if (products.length === 0 && state?.category) {
@@ -92,12 +87,6 @@ const ProductsList = ({ state, categories, products }) => {
                 >
                   Add to Cart
                 </button>
-                <button
-                  disabled={product.quantity < 1 && true}
-                  onClick={() => payment(product)}
-                >
-                  Order Now
-                </button>
               </div>
             </article>
           );
@@ -152,6 +141,9 @@ const Wrapper = styled.section`
     border-radius: 3px;
     box-shadow: 0px 0px 3px var(--lightblack);
     transition: transform 0.2s linear;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   .single-product:hover {
@@ -168,7 +160,7 @@ const Wrapper = styled.section`
   }
 
   .btn-container button {
-    width: 40%;
+    width: 100%;
     padding: 10px 5px;
     background-color: var(--darkblue);
     color: white;

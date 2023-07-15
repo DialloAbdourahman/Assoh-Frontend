@@ -18,6 +18,7 @@ import {
 import ProtectAdmin from './components/ProtectAdmin';
 import ProtectSeller from './components/ProtectSeller';
 import ProtectCustomer from './components/ProtectCustomer';
+import ProtectCustomerOrUnauth from './components/ProtectCustomerOrUnauth';
 import ProtectLogin from './components/ProtectLogin';
 import { useGlobalContext } from './contexts/globalContext';
 import { Navbar, Sidebar, Footer } from './components';
@@ -41,12 +42,6 @@ function App() {
             <Route path='/products' element={<Products />} />
             <Route path='/contact' element={<ContactUs />} />
             <Route path='/product/:id' element={<SingleProduct />} />
-            <Route
-              path='/singleProductPayment'
-              element={<SingleProductPayment />}
-            />
-            <Route path='/payCartProducts' element={<PayCartProducts />} />
-            <Route path='/cart' element={<Cart />} />
             <Route path='/sellerInfo/:id' element={<SellerInfo />} />
 
             {/* Logged in Routes */}
@@ -72,6 +67,30 @@ function App() {
             {/* Seller Routes  */}
 
             {/* Customer Routes */}
+            <Route
+              path='/cart'
+              element={
+                <ProtectCustomerOrUnauth>
+                  <Cart />
+                </ProtectCustomerOrUnauth>
+              }
+            />
+            <Route
+              path='/payCartProducts'
+              element={
+                <ProtectCustomer>
+                  <PayCartProducts />
+                </ProtectCustomer>
+              }
+            />
+            <Route
+              path='/singleProductPayment'
+              element={
+                <ProtectCustomer>
+                  <SingleProductPayment />
+                </ProtectCustomer>
+              }
+            />
 
             {/* Error Routes */}
             <Route path='/unauthorized' element={<Unauthorized />} />
@@ -92,9 +111,7 @@ const WrapperGrow = styled.section`
 
 export default App;
 
-// Put all the required restrictions.
-// Seller info page (when we click on seller info on the single product page).
-// Account page.
+// Account page. (include a way for the customer to see all his/her seller report and allow him to delete)
 // Work on the css.
 
 // Work on the seller dashboard.

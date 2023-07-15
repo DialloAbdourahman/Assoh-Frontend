@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useAuthContext } from '../contexts/authContext';
 import { useProductsContext } from '../contexts/productsContext';
 import { ADD_TO_CART } from '../utils/actions';
 
 const ProductsList = ({ state, categories, products }) => {
   const { dispatch, cart } = useProductsContext();
+  const { user } = useAuthContext();
 
   const addToCart = (product) => {
     const productExist = cart.find((item) => item.id === product.id);
@@ -80,14 +82,16 @@ const ProductsList = ({ state, categories, products }) => {
                   <span className='orange'>{product.price} FCFA</span>
                 </p>
               </Link>
-              <div className='btn-container'>
-                <button
-                  disabled={product.quantity < 1 && true}
-                  onClick={() => addToCart(product)}
-                >
-                  Add to Cart
-                </button>
-              </div>
+              {(user?.role === 'customer' || !user?.email) && (
+                <div className='btn-container'>
+                  <button
+                    disabled={product.quantity < 1 && true}
+                    onClick={() => addToCart(product)}
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              )}
             </article>
           );
         })}

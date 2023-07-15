@@ -125,16 +125,20 @@ const Navbar = () => {
             Log in
           </NavLink>
         )}
-        <NavLink
-          to={'/cart'}
-          className={({ isActive }) => (isActive ? 'cart active-link' : 'cart')}
-        >
-          <p className='cart-text'>Cart</p>
-          <AiOutlineShoppingCart className='cart-icon' />
-          <div className='cart-number'>
-            <span>{cartAmount}</span>
-          </div>
-        </NavLink>
+        {(user?.role === 'customer' || !user?.email) && (
+          <NavLink
+            to={'/cart'}
+            className={({ isActive }) =>
+              isActive ? 'cart active-link' : 'cart'
+            }
+          >
+            <p className='cart-text'>Cart</p>
+            <AiOutlineShoppingCart className='cart-icon' />
+            <div className='cart-number'>
+              <span>{cartAmount}</span>
+            </div>
+          </NavLink>
+        )}
         {user.email && (
           <>
             <button

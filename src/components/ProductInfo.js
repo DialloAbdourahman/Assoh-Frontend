@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import ImagesDisplay from './ImagesDisplay';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../contexts/authContext';
 import { useProductsContext } from '../contexts/productsContext';
 import { ADD_TO_CART } from '../utils/actions';
 
 const ProductInfo = ({ product, amount, setAmount }) => {
   const { cart, dispatch } = useProductsContext();
+  const { user } = useAuthContext();
+
   const navigate = useNavigate();
 
   const addToCart = (product) => {
@@ -48,10 +51,19 @@ const ProductInfo = ({ product, amount, setAmount }) => {
         <p>Price: {product?.price} FCFA</p>
         <p>
           Shipping Countries:{' '}
-          {product?.seller?.shippingCountries.map(
-            (country, index) => `${country}, `
-          )}
+          {product?.seller?.shippingCountries?.map((country) => `${country}, `)}
         </p>
+        <ul>
+          Shipping regions and prices:{' '}
+          {product?.seller?.shippingRegionsAndPrices?.map((region, index) => {
+            return (
+              <li key={index}>
+                {region?.name}: {region?.shippingPrice}FCFA
+              </li>
+            );
+          })}
+        </ul>
+
         <div className='quantity'>
           Quantity:{' '}
           <input
@@ -64,29 +76,21 @@ const ProductInfo = ({ product, amount, setAmount }) => {
             max={product?.quantity}
           />
         </div>
-        <ul>
-          Shipping regions and prices:{' '}
-          {product?.seller?.shippingRegionsAndPrices.map((region, index) => {
-            return (
-              <li key={index}>
-                {region?.name}: {region?.shippingPrice}FCFA
-              </li>
-            );
-          })}
-        </ul>
 
-        <div className='list-buttons'>
-          <button
-            onClick={() => {
-              addToCart({ ...product, amount });
-            }}
-          >
-            Add to Cart
-          </button>
-          <button onClick={() => buyNow({ ...product, amount })}>
-            Buy Now
-          </button>
-        </div>
+        {(user?.role === 'customer' || !user?.email) && (
+          <div className='list-buttons'>
+            <button
+              onClick={() => {
+                addToCart({ ...product, amount });
+              }}
+            >
+              Add to Cart
+            </button>
+            <button onClick={() => buyNow({ ...product, amount })}>
+              Buy Now
+            </button>
+          </div>
+        )}
       </div>
     </Wrapper>
   );

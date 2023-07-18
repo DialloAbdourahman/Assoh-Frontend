@@ -42,3 +42,46 @@
   align-items: center;
   padding: 5px 0;
 }
+
+.hover:hover {
+  transform: scale(95%);
+  transition: transform 0.2s linear;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 50px 0;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100000000000;
+}
+
+.inside-modal {
+  width: 40%;
+  max-width: 500px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.inside-modal button {
+  width: 150px;
+  padding: 10px 5px;
+  background-color: var(--darkblue);
+  color: white;
+  font-size: 17px;
+  border: none;
+  border-radius: 5px;
+}

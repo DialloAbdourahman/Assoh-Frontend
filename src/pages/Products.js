@@ -38,7 +38,7 @@ const Products = () => {
       dispatchGlobalContext({ type: SET_LOADING_TRUE });
 
       const { data } = await axiosInstance.get(
-        `/products?name=${state?.name}&page=${page}&categoryId=${state?.category}&nameSort=${nameSort}&minPrice=${price[0]}&maxPrice=${price[1]}&rating=${rating}`
+        `/products?name=${state?.name}&page=${page}&categoryId=${state?.category}&nameSort=${nameSort}&minPrice=${price[0]}&maxPrice=${price[1]}&rating=${rating}&sellerId=`
       );
 
       dispatch({ type: SET_PRODUCTS, payload: data });
@@ -46,6 +46,10 @@ const Products = () => {
     } catch (error) {
       dispatchGlobalContext({ type: SET_LOADING_FALSE });
     }
+  };
+
+  const handleChange = (event, value) => {
+    setPage(value);
   };
 
   useEffect(() => {
@@ -58,34 +62,33 @@ const Products = () => {
 
   return (
     <Wrapper className='container'>
-      <div className='align'>
-        <ProductsFilters
-          rating={rating}
-          setRating={setRating}
-          price={price}
-          setPrice={setPrice}
-          nameSort={nameSort}
-          setNameSort={setNameSort}
-          validateFilters={validateFilters}
-          setValidateFilters={setValidateFilters}
-          resetFilters={resetFilters}
-        />
-        <ProductsList
-          state={state}
-          categories={categories}
-          products={products}
-        />
-      </div>
+      <ProductsFilters
+        rating={rating}
+        setRating={setRating}
+        price={price}
+        setPrice={setPrice}
+        nameSort={nameSort}
+        setNameSort={setNameSort}
+        validateFilters={validateFilters}
+        setValidateFilters={setValidateFilters}
+        resetFilters={resetFilters}
+      />
+      <ProductsList
+        state={state}
+        categories={categories}
+        products={products}
+        page={page}
+        setPage={setPage}
+        handleChange={handleChange}
+      />
     </Wrapper>
   );
 };
 
 const Wrapper = styled.section`
-  .align {
-    display: flex;
-    justify-content: space-between;
-    min-height: 100%;
-  }
+  min-height: calc(100vh - (104px + 18px));
+  display: flex;
+  justify-content: space-between;
 `;
 
 export default Products;

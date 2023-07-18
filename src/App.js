@@ -14,6 +14,9 @@ import {
   Account,
   Cart,
   PayCartProducts,
+  SellerDashboard,
+  AdminDashboard,
+  Help,
 } from './pages';
 import ProtectAdmin from './components/ProtectAdmin';
 import ProtectSeller from './components/ProtectSeller';
@@ -24,6 +27,14 @@ import { useGlobalContext } from './contexts/globalContext';
 import { Navbar, Sidebar, Footer } from './components';
 import styled from 'styled-components';
 import Loading from './components/Loading';
+import SellerStatistics from './components/SellerStatistics';
+import SellerProducts from './components/SellerProducts';
+import SellerOrders from './components/SellerOrders';
+import SellerPayments from './components/SellerPayments';
+import AdminStatistics from './components/AdminStatistics';
+import AdminSellers from './components/AdminSellers';
+import AdminProducts from './components/AdminProducts';
+import AdminCustomers from './components/AdminCustomers';
 
 function App() {
   const { light } = useGlobalContext();
@@ -43,6 +54,7 @@ function App() {
             <Route path='/contact' element={<ContactUs />} />
             <Route path='/product/:id' element={<SingleProduct />} />
             <Route path='/sellerInfo/:id' element={<SellerInfo />} />
+            <Route path='/help' element={<Help />} />
 
             {/* Logged in Routes */}
             <Route
@@ -56,15 +68,33 @@ function App() {
 
             {/* Admin Routes  */}
             <Route
-              path='/admintest'
+              path='/adminDashboard'
               element={
                 <ProtectAdmin>
-                  <h1>Welcome admin</h1>
+                  <AdminDashboard />
                 </ProtectAdmin>
               }
-            />
+            >
+              <Route path='statistics' element={<AdminStatistics />} />
+              <Route path='sellers' element={<AdminSellers />} />
+              <Route path='products' element={<AdminProducts />} />
+              <Route path='customers' element={<AdminCustomers />} />
+            </Route>
 
             {/* Seller Routes  */}
+            <Route
+              path='/sellerDashboard'
+              element={
+                <ProtectSeller>
+                  <SellerDashboard />
+                </ProtectSeller>
+              }
+            >
+              <Route path='statistics' element={<SellerStatistics />} />
+              <Route path='products' element={<SellerProducts />} />
+              <Route path='orders' element={<SellerOrders />} />
+              <Route path='sellerPayments' element={<SellerPayments />} />
+            </Route>
 
             {/* Customer Routes */}
             <Route
@@ -103,7 +133,11 @@ function App() {
   );
 }
 
-const Wrapper = styled.section``;
+const Wrapper = styled.section`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
 
 const WrapperGrow = styled.section`
   min-height: calc(100vh - (104px + 18px));
@@ -112,6 +146,7 @@ const WrapperGrow = styled.section`
 export default App;
 
 // Account page. (include a way for the customer to see all his/her seller report and allow him to delete)
+// try to see if you can work on the contact seller page.
 // Work on the css.
 
 // Work on the seller dashboard.

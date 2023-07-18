@@ -73,10 +73,15 @@ const ProductsFilters = ({
         </FormControl>
       </div>
       <div className='validate-filters'>
-        <button onClick={() => setValidateFilters(!validateFilters)}>
+        <button
+          onClick={() => setValidateFilters(!validateFilters)}
+          className='hover'
+        >
           Validate
         </button>
-        <button onClick={resetFilters}>Reset</button>
+        <button onClick={resetFilters} className='hover'>
+          Reset
+        </button>
       </div>
     </Wrapper>
   );
@@ -86,16 +91,14 @@ export default ProductsFilters;
 
 const Wrapper = styled.section`
   width: 20%;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  padding: 0px 20px;
+  padding-right: 30px;
   margin-right: 10px;
   border-right: 1px solid var(--lightblack);
 
   h1 {
     text-align: center;
     font-size: 25px;
-    margin-bottom: 20px;
+    margin: 20px 0;
   }
 
   h2 {

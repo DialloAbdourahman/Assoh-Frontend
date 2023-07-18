@@ -11,6 +11,9 @@ import Account from './Account';
 import SingleProductPayment from './SingleProductPayment';
 import PayCartProducts from './PayCartProducts';
 import Cart from './Cart';
+import SellerDashboard from './SellerDashboard';
+import AdminDashboard from './AdminDashboard';
+import Help from './Help';
 
 export {
   Home,
@@ -26,4 +29,7 @@ export {
   SingleProductPayment,
   Cart,
   PayCartProducts,
+  SellerDashboard,
+  AdminDashboard,
+  Help,
 };

@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ContactUs = () => {
+const Help = () => {
   return (
     <Wrapper>
-      <h2>All contact information here.</h2>
+      <h2>Help page.</h2>
     </Wrapper>
   );
 };
 
-export default ContactUs;
+export default Help;
 
 const Wrapper = styled.section``;

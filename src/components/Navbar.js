@@ -101,6 +101,26 @@ const Navbar = () => {
           <p className='category'>Category</p>
           <CategoriesList />
         </div>
+        {user?.role === 'seller' && (
+          <NavLink
+            to={'/sellerDashboard/statistics'}
+            className={({ isActive }) =>
+              isActive ? 'dashboard active-link' : 'dashboard'
+            }
+          >
+            Dashboard
+          </NavLink>
+        )}
+        {user?.role === 'admin' && (
+          <NavLink
+            to={'/adminDashboard/statistics'}
+            className={({ isActive }) =>
+              isActive ? 'dashboard active-link' : 'dashboard'
+            }
+          >
+            Dashboard
+          </NavLink>
+        )}
         <NavLink
           to={'/contact'}
           className={({ isActive }) =>
@@ -313,7 +333,8 @@ const Wrapper = styled.nav`
   .login:hover,
   .contact-us:hover,
   .cart:hover,
-  .help:hover {
+  .help:hover,
+  .dashboard:hover {
     transition: color 0.2s linear;
     color: var(--orange);
   }
@@ -336,7 +357,8 @@ const Wrapper = styled.nav`
   .logo a,
   .cart,
   .help,
-  .contact-us {
+  .contact-us,
+  .dashboard {
     color: white;
   }
 
@@ -387,6 +409,10 @@ const Wrapper = styled.nav`
     }
 
     .account {
+      display: none;
+    }
+
+    .dashboard {
       display: none;
     }
 

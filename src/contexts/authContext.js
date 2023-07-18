@@ -48,7 +48,7 @@ const AuthProvider = ({ children }) => {
   }, [state.user]);
 
   return (
-    <AuthContext.Provider value={{ ...state, dispatch }}>
+    <AuthContext.Provider value={{ ...state, dispatch, refreshToken }}>
       {children}
     </AuthContext.Provider>
   );

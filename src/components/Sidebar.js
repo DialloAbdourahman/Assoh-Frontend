@@ -14,7 +14,7 @@ import {
 const Sidebar = () => {
   const { sidebar, dispatch, categories } = useGlobalContext();
   const { user } = useAuthContext();
-  const [categoriesOpen, setCategoriesOpen] = useState(true);
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -55,6 +55,11 @@ const Sidebar = () => {
             close
           </button>
         </div>
+        {user?.role === 'seller' && (
+          <Link to={'/sellerDashboard/statistics'} className='dashboard'>
+            Dashboard
+          </Link>
+        )}
         <button onClick={() => setCategoriesOpen(!categoriesOpen)}>
           Categories
         </button>
@@ -150,7 +155,8 @@ const Wrapper = styled.section`
   }
 
   .login,
-  .signup {
+  .signup,
+  .dashboard {
     display: none;
   }
 
@@ -168,7 +174,8 @@ const Wrapper = styled.section`
       display: block;
     }
     .login,
-    .signup {
+    .signup,
+    .dashboard {
       display: block;
     }
   }

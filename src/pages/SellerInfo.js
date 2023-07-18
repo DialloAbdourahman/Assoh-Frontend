@@ -70,67 +70,145 @@ const SellerInfo = () => {
   }, []);
 
   return (
-    <Wrapper>
-      <img
-        src={
-          seller?.avatarUrl
-            ? seller.avatarUrl.split(' ')[1]
-            : '/images/user.jpg'
-        }
-        alt=''
-      />
-      <p>Name: {seller?.name}</p>
-      <p>Email: {seller?.email}</p>
-      <p>PhoneNumber: {seller?.phoneNumber ? seller?.phoneNumber : 'N/A'}</p>
-      <p>Country: {seller?.country ? seller?.country : 'N/A'}</p>
-      <p>Region: {seller?.region ? seller?.region : 'N/A'}</p>
-      <p>Address: {seller?.address ? seller?.address : 'N/A'}</p>
-      <p>
-        Shipping Countries:{' '}
-        {seller?.shippingCountries?.map((country) => `${country}, `)}
-      </p>
-      <ul>
-        Shipping regions and prices:{' '}
-        {seller?.shippingRegionsAndPrices?.map((region, index) => {
-          return (
-            <li key={index}>
-              {region?.name}: {region?.shippingPrice}FCFA
-            </li>
-          );
-        })}
-      </ul>
-
-      <form onSubmit={reportSeller}>
-        <h2>Report Seller</h2>
-        <textarea
-          name='message'
-          id='message'
-          cols='30'
-          rows='10'
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        ></textarea>
-        <button type='submit'>report</button>
-      </form>
-
-      {user?.role === 'admin' && (
+    <Wrapper className='container'>
+      <div className='inside'>
+        <img
+          src={
+            seller?.avatarUrl
+              ? seller.avatarUrl.split(' ')[1]
+              : '/images/user.jpg'
+          }
+          alt=''
+        />
+        <p>
+          <span className='bold'>Name:</span> {seller?.name}
+        </p>
+        <p>
+          <span className='bold'>Email:</span> {seller?.email}
+        </p>
+        <p>
+          <span className='bold'>PhoneNumber:</span>{' '}
+          {seller?.phoneNumber ? seller?.phoneNumber : 'N/A'}
+        </p>
+        <p>
+          <span className='bold'>Country:</span>{' '}
+          {seller?.country ? seller?.country : 'N/A'}
+        </p>
+        <p>
+          <span className='bold'>Region:</span>{' '}
+          {seller?.region ? seller?.region : 'N/A'}
+        </p>
+        <p>
+          <span className='bold'>Address:</span>{' '}
+          {seller?.address ? seller?.address : 'N/A'}
+        </p>
+        <p>
+          <span className='bold'>Shipping Countries:</span>{' '}
+          {seller?.shippingCountries?.map((country) => `${country}, `)}
+        </p>
         <ul>
-          <h2>Reports ({seller?.recievedReports?.length})</h2>
-          {seller?.recievedReports?.map((report) => {
+          <span className='bold'>Shipping regions and prices:</span>{' '}
+          {seller?.shippingRegionsAndPrices?.map((region, index) => {
             return (
-              <article key={report?.id}>
-                <p>Reporter: {report?.customer.name}</p>
-                <p>Message: {report?.reportMessage}</p>
-              </article>
+              <span key={index}>
+                {region?.name}: {region?.shippingPrice} FCFA,
+              </span>
             );
           })}
         </ul>
-      )}
-      <button>Contact seller</button>
+        {user?.role === 'customer' && (
+          <button className='margin'>Contact seller</button>
+        )}
+        <form onSubmit={reportSeller} className='form-report'>
+          <h2>Report Seller</h2>
+          <textarea
+            name='message'
+            id='message'
+            cols='30'
+            rows='10'
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder='Enter your report message.'
+          ></textarea>
+          <br />
+          <button type='submit'>report</button>
+        </form>
+
+        {/* {user?.role === 'admin' && (
+          <ul>
+            <h2>Reports ({seller?.recievedReports?.length})</h2>
+            {seller?.recievedReports?.map((report) => {
+              return (
+                <article key={report?.id}>
+                  <p>Reporter: {report?.customer.name}</p>
+                  <p>Message: {report?.reportMessage}</p>
+                </article>
+              );
+            })}
+          </ul>
+        )} */}
+      </div>
     </Wrapper>
   );
 };
 
 export default SellerInfo;
 
-const Wrapper = styled.section``;
+const Wrapper = styled.section`
+  margin-top: 20px;
+
+  img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+  }
+
+  .inside {
+    width: 60%;
+    margin: auto;
+    text-align: center;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 3px var(--lightblack);
+    padding: 20px;
+  }
+
+  p {
+    margin: 15px;
+  }
+
+  .bold {
+    font-weight: bolder;
+  }
+
+  .form-report {
+    margin: 20px 0;
+  }
+
+  .form-report h2 {
+    margin-bottom: 20px;
+  }
+
+  .form-report textarea {
+    width: 90%;
+    outline: none;
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+
+  button {
+    width: 150px;
+    padding: 10px 5px;
+    background-color: var(--darkblue);
+    color: white;
+    font-size: 17px;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .margin {
+    margin-top: 20px;
+  }
+`;

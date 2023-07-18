@@ -1,11 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { Pagination } from '@mui/material';
 import { useAuthContext } from '../contexts/authContext';
 import { useProductsContext } from '../contexts/productsContext';
 import { ADD_TO_CART } from '../utils/actions';
 
-const ProductsList = ({ state, categories, products }) => {
+const ProductsList = ({
+  state,
+  categories,
+  products,
+  page,
+  setPage,
+  handleChange,
+}) => {
   const { dispatch, cart } = useProductsContext();
   const { user } = useAuthContext();
 
@@ -33,6 +41,15 @@ const ProductsList = ({ state, categories, products }) => {
             " Category
           </h1>
         )}
+        <div className='pagination'>
+          <Pagination
+            count={11}
+            defaultPage={page}
+            siblingCount={0}
+            onChange={handleChange}
+            size='large'
+          />
+        </div>
       </Wrapper>
     );
   }
@@ -41,6 +58,15 @@ const ProductsList = ({ state, categories, products }) => {
     return (
       <Wrapper>
         <h3 className='no-products'>No product matches your search</h3>
+        <div className='pagination'>
+          <Pagination
+            count={11}
+            defaultPage={page}
+            siblingCount={0}
+            onChange={handleChange}
+            size='large'
+          />
+        </div>
       </Wrapper>
     );
   }
@@ -96,6 +122,15 @@ const ProductsList = ({ state, categories, products }) => {
           );
         })}
       </div>
+      <div className='pagination'>
+        <Pagination
+          count={11}
+          defaultPage={page}
+          siblingCount={0}
+          onChange={handleChange}
+          size='large'
+        />
+      </div>
     </Wrapper>
   );
 };
@@ -103,7 +138,7 @@ const ProductsList = ({ state, categories, products }) => {
 export default ProductsList;
 
 const Wrapper = styled.section`
-  width: 80%;
+  width: 75%;
   min-height: 100%;
 
   a {

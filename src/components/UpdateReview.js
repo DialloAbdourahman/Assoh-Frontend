@@ -62,7 +62,7 @@ const UpdateReview = ({
 
   return (
     <Wrapper className='modal'>
-      <form onSubmit={handleSubmit} className='inside-modal'>
+      <form onSubmit={handleSubmit} className='inside-modal title'>
         <h2 className='title'>Update Review</h2>
         <div className='field'>
           <label htmlFor='rating'>Rating: </label>

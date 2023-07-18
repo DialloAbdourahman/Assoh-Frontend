@@ -35,18 +35,31 @@ const DeleteProduct = ({ deleteProduct, setDeleteProduct, fetchProducts }) => {
   };
 
   return (
-    <Wrapper>
-      <h2>
-        Are you sure you want to delete "{deleteProduct?.product?.name}" ?
-      </h2>
-      <button onClick={handleDeleteProduct}>Yes</button>
-      <button onClick={() => setDeleteProduct({ show: false, product: {} })}>
-        No
-      </button>
+    <Wrapper className='modal'>
+      <div className='inside-modal'>
+        <h2>
+          Are you sure you want to delete "{deleteProduct?.product?.name}" ?
+        </h2>
+        <div className='list-buttons'>
+          <button
+            onClick={() => setDeleteProduct({ show: false, product: {} })}
+          >
+            No
+          </button>
+          <button onClick={handleDeleteProduct}>Yes</button>
+        </div>
+      </div>
     </Wrapper>
   );
 };
 
 export default DeleteProduct;
 
-const Wrapper = styled.section``;
+const Wrapper = styled.section`
+  text-align: center;
+  .list-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+`;

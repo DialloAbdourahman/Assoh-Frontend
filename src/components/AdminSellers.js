@@ -52,20 +52,20 @@ const AdminSellers = () => {
 
   return (
     <Wrapper>
-      <header>
+      <header className='dashboard-header'>
         <h2>All Sellers</h2>
+        <input
+          type='text'
+          id='name'
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder='Search for a seller'
+        />
         <button onClick={() => setCreateSeller(true)}>Add a seller</button>
       </header>
-      <input
-        type='text'
-        id='name'
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder='Search for a seller'
-      />
       {sellers?.length === 0 && <h2>No Sellers available. </h2>}
       {sellers.length > 0 && (
-        <table>
+        <table className='dashboard-table'>
           <thead>
             <tr>
               <th>Seller ID</th>
@@ -99,12 +99,14 @@ const AdminSellers = () => {
           </tbody>
         </table>
       )}
-      <Pagination
-        count={11}
-        defaultPage={page}
-        siblingCount={0}
-        onChange={handleChange}
-      />
+      <div className='pagination'>
+        <Pagination
+          count={11}
+          defaultPage={page}
+          siblingCount={0}
+          onChange={handleChange}
+        />
+      </div>
       {deleteSeller.show && (
         <AdminDeleteSeller
           deleteSeller={deleteSeller}

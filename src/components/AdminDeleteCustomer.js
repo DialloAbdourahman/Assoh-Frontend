@@ -39,19 +39,33 @@ const AdminDeleteCustomer = ({
   };
 
   return (
-    <Wrapper>
-      <h2>
-        Are you sure you want to delete customer "
-        {deleteCustomer?.customer?.name}" ?
-      </h2>
-      <button onClick={handleDeleteCustomer}>Yes</button>
-      <button onClick={() => setDeleteCustomer({ show: false, customer: {} })}>
-        No
-      </button>
+    <Wrapper className='modal'>
+      <div className='inside-modal'>
+        <h2>
+          Are you sure you want to delete customer "
+          {deleteCustomer?.customer?.name}" ?
+        </h2>
+        <div className='list-buttons'>
+          {' '}
+          <button
+            onClick={() => setDeleteCustomer({ show: false, customer: {} })}
+          >
+            No
+          </button>
+          <button onClick={handleDeleteCustomer}>Yes</button>
+        </div>
+      </div>
     </Wrapper>
   );
 };
 
 export default AdminDeleteCustomer;
 
-const Wrapper = styled.section``;
+const Wrapper = styled.section`
+  text-align: center;
+  .list-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+`;

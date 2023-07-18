@@ -56,7 +56,7 @@
 }
 
 .modal {
-  position: fixed;
+  position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
@@ -69,8 +69,8 @@
 }
 
 .inside-modal {
-  width: 40%;
-  max-width: 500px;
+  width: 50%;
+  max-width: 600px;
   padding: 20px;
   border-radius: 10px;
   background-color: white;
@@ -84,4 +84,80 @@
   font-size: 17px;
   border: none;
   border-radius: 5px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.dashboard-header input {
+  width: 60%;
+  text-align: center;
+  padding: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  outline: none;
+}
+
+.dashboard-header button {
+  padding: 10px 5px;
+  background-color: var(--darkblue);
+  color: white;
+  font-size: 17px;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.boxes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.box {
+  border: 1px solid black;
+  border-radius: 10px;
+  max-width: 300px;
+  width: 30%;
+  text-align: center;
+  margin-right: 20px;
+  padding: 10px 0;
+  color: white;
+  background-color: var(--darkblue);
+}
+
+.box p {
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.dashboard-table {
+  padding: 10px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dashboard-table td,
+.dashboard-table th {
+  border: 1px solid var(--darkblue);
+  border-collapse: collapse;
+  padding: 5px;
+}
+
+.dashboard-table button {
+  padding: 5px;
+  background-color: var(--darkblue);
+  color: white;
+  font-size: 17px;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 5px;
 }

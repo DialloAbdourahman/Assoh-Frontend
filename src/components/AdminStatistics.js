@@ -33,7 +33,9 @@ const AdminStatistics = () => {
 
   return (
     <Wrapper>
-      <h2>Admin statistics</h2>
+      <header className='dashboard-header'>
+        <h2>Admin statistics</h2>
+      </header>
       <div className='boxes'>
         <div className='box'>
           <p className='value'>{statistics?.sellers}</p>
@@ -62,22 +64,6 @@ export default AdminStatistics;
 const Wrapper = styled.section`
   width: 80%;
   padding: 10px;
-
-  .boxes {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px 0;
-    width: 100%;
-  }
-
-  .box {
-    border: 1px solid black;
-    border-radius: 10px;
-    max-width: 300px;
-    width: 30%;
-    text-align: center;
-  }
 
   .stats-img {
     display: block;

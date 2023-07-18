@@ -25,6 +25,7 @@ const SellerDashboardLeft = () => {
       >
         Orders
       </NavLink>
+      <br />
       <NavLink
         to={'sellerPayments'}
         className={({ isActive }) => (isActive ? 'link active-link' : 'link')}

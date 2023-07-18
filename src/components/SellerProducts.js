@@ -57,20 +57,20 @@ const SellerProducts = () => {
 
   return (
     <Wrapper>
-      <header>
+      <header className='dashboard-header'>
         <h2>All my products</h2>
+        <input
+          type='text'
+          id='name'
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder='Search for your product'
+        />
         <button onClick={() => setCreateProduct(true)}>Add a product</button>
       </header>
-      <input
-        type='text'
-        id='name'
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder='Search for your product'
-      />
       {products?.length === 0 && <h2>No product available. </h2>}
       {products.length > 0 && (
-        <table>
+        <table className='dashboard-table'>
           <thead>
             <tr>
               <th>Product ID</th>
@@ -120,12 +120,14 @@ const SellerProducts = () => {
           </tbody>
         </table>
       )}
-      <Pagination
-        count={11}
-        defaultPage={page}
-        siblingCount={0}
-        onChange={handleChange}
-      />
+      <div className='pagination'>
+        <Pagination
+          count={11}
+          defaultPage={page}
+          siblingCount={0}
+          onChange={handleChange}
+        />
+      </div>
       {editProduct.show && (
         <UpdateProduct
           editProduct={editProduct}

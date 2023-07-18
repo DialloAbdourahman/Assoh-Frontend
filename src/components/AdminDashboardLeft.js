@@ -32,6 +32,14 @@ const AdminDashboardLeft = () => {
       >
         Products
       </NavLink>
+      <br />
+      <NavLink
+        to={'/'}
+        className={({ isActive }) => (isActive ? 'link active-link' : 'link')}
+      >
+        Categories
+      </NavLink>
+      <br />
     </Wrapper>
   );
 };

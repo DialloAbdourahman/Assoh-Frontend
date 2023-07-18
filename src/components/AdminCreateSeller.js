@@ -48,43 +48,63 @@ const AdminCreateSeller = ({ setCreateSeller, fetchSellers }) => {
   };
 
   return (
-    <Wrapper>
-      <h2>Create a new seller</h2>
-      <button onClick={() => setCreateSeller(false)}>close</button>
-      <form onSubmit={handleSubmit}>
-        <div className='field'>
-          <label htmlFor='name'>Name: </label>
-          <input
-            type='text'
-            name='name'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className='field'>
-          <label htmlFor='email'>Email: </label>
-          <input
-            type='email'
-            name='email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className='field'>
-          <label htmlFor='password'>Password: </label>
-          <input
-            type='text'
-            name='password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button>Submit</button>
-      </form>
+    <Wrapper className='modal'>
+      <div className='inside-modal'>
+        <h2>Create a new seller</h2>
+        <form onSubmit={handleSubmit}>
+          <div className='field'>
+            <label htmlFor='name'>Name: </label>
+            <input
+              type='text'
+              name='name'
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div className='field'>
+            <label htmlFor='email'>Email: </label>
+            <input
+              type='email'
+              name='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className='field'>
+            <label htmlFor='password'>Password: </label>
+            <input
+              type='text'
+              name='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className='list-buttons'>
+            <button onClick={() => setCreateSeller(false)}>close</button>
+            <button>Submit</button>
+          </div>
+        </form>
+      </div>
     </Wrapper>
   );
 };
 
 export default AdminCreateSeller;
 
-const Wrapper = styled.section``;
+const Wrapper = styled.section`
+  text-align: center;
+
+  .field {
+    display: flex;
+    margin: 20px 0;
+  }
+
+  .field label {
+    margin-right: 20px;
+  }
+
+  .list-buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
